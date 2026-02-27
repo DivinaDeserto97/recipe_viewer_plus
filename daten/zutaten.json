@@ -29,7 +29,7 @@
         "kh_g": 1.8
       },
 
-      "allergene_ids": []
+      "eigenschaften_ids": []
     },
 
     {
@@ -40,14 +40,8 @@
       "saison": { "schweiz_monate": [], "alternativ_labels": ["Ganzjährig"] },
       "schlecht_erkennen": ["Schwefeliger Geruch", "Ungewöhnliche Verfärbung"],
       "naehrwerte_pro_100g": { "kcal": 143, "protein_g": 13, "fett_g": 10, "kh_g": 1.1 },
-      "allergene_ids": ["alg_ei"]
-    }
-  ],
 
-  "allergene": [
-    { "id": "alg_ei", "label": "Ei" },
-    { "id": "alg_senf", "label": "Senf" },
-    { "id": "alg_gluten", "label": "Gluten" },
-    { "id": "alg_laktose", "label": "Laktose" }
+      "eigenschaften_ids": ["prop_enthaelt_ei"]
+    }
   ]
 }

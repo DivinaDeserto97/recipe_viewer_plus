@@ -1,7 +1,9 @@
 {
   "eigenschaften": [
-    { "id": "prop_glutenfrei", "label": "Glutenfrei", "gruppe": "Allergie/Unverträglichkeit", "icon": "🌾🚫" },
-    { "id": "prop_laktosefrei", "label": "Laktosefrei", "gruppe": "Allergie/Unverträglichkeit", "icon": "🥛🚫" },
+    { "id": "prop_enthaelt_gluten", "label": "Enthält Gluten", "gruppe": "Allergen (enthält)", "icon": "🌾" },
+    { "id": "prop_enthaelt_laktose", "label": "Enthält Laktose", "gruppe": "Allergen (enthält)", "icon": "🥛" },
+    { "id": "prop_enthaelt_ei", "label": "Enthält Ei", "gruppe": "Allergen (enthält)", "icon": "🥚" },
+    { "id": "prop_enthaelt_senf", "label": "Enthält Senf", "gruppe": "Allergen (enthält)", "icon": "🌭" },
 
     { "id": "prop_vegetarisch", "label": "Vegetarisch", "gruppe": "Ernährung", "icon": "🥦" },
     { "id": "prop_vegan", "label": "Vegan", "gruppe": "Ernährung", "icon": "🌱" },

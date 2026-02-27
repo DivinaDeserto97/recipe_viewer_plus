@@ -1,27 +1,51 @@
 "use strict";
 
+/**
+ * ============================================================
+ * startseite.js
+ * ============================================================
+ * - Theme umschalten (Hell/Dunkel)
+ * - Saison/Monat-Select aus daten/saison.json füllen
+ * - Eigenschaften-Dropdown mit Checkboxen aus daten/eigenschaften.json füllen
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
-  // ===== Dark/Light Toggle (B1) =====
+  initThemeToggle();
+  initSaisonSelect();
+  initEigenschaftenDropdown();
+});
+
+// ============================================================
+// THEME TOGGLE
+// ============================================================
+function initThemeToggle() {
   const toggle = document.getElementById("themeToggle");
+  if (!toggle) return;
+
   toggle.addEventListener("click", () => {
     document.body.classList.toggle("dark");
     toggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
   });
+}
 
-  // ===== Seasonal Select befüllen =====
+// ============================================================
+// SAISON SELECT
+// ============================================================
+function initSaisonSelect() {
   const select = document.getElementById("seasonSelect");
+  if (!select) return;
 
-  // Sicherheits-Reset: Standard soll IMMER "Alle" bleiben
+  // Standard: "Alle"
   select.value = "";
 
   loadSaisonDataAndFillSelect(select).catch((err) => {
-    console.error("Fehler beim Laden von daten/saison.json:", err);
+    console.error("Fehler beim Laden von ./daten/saison.json:", err);
   });
 
   select.addEventListener("change", (e) => {
-    console.log("Gewählt:", e.target.value); // "" = Alle
+    console.log("Saison/Monat gewählt:", e.target.value || "Alle");
   });
-});
+}
 
 async function loadSaisonDataAndFillSelect(selectEl) {
   const res = await fetch("./daten/saison.json");
@@ -29,6 +53,9 @@ async function loadSaisonDataAndFillSelect(selectEl) {
 
   const data = await res.json();
   const list = Array.isArray(data.saison_labels) ? data.saison_labels : [];
+
+  // Alte Optionen entfernen (aber "Alle" behalten)
+  while (selectEl.options.length > 1) selectEl.remove(1);
 
   const optgroupSeasons = document.createElement("optgroup");
   optgroupSeasons.label = "Jahreszeiten";
@@ -40,44 +67,44 @@ async function loadSaisonDataAndFillSelect(selectEl) {
     if (!entry || !entry.id || !entry.label) return;
 
     const option = document.createElement("option");
-    option.value = entry.id;
-    option.textContent = entry.label;
+    option.value = String(entry.id);
+    option.textContent = String(entry.label);
 
-    if (String(entry.id).startsWith("saison_")) {
-      optgroupSeasons.appendChild(option);
-    } else {
-      optgroupMonths.appendChild(option);
-    }
+    if (option.value.startsWith("saison_")) optgroupSeasons.appendChild(option);
+    else optgroupMonths.appendChild(option);
   });
 
   selectEl.appendChild(optgroupSeasons);
   selectEl.appendChild(optgroupMonths);
 
-  // WICHTIG: Keine automatische Auswahl -> bleibt "Alle"
+  // Keine Auto-Auswahl
   selectEl.value = "";
 }
 
-initEigenschaftenBootstrapLikeDropdown().catch((err) => {
-  console.error("Fehler beim Dropdown Eigenschaften:", err);
-});
+// ============================================================
+// EIGENSCHAFTEN DROPDOWN
+// ============================================================
+function initEigenschaftenDropdown() {
+  initEigenschaftenBootstrapLikeDropdown().catch((err) => {
+    console.error("Fehler beim Dropdown Eigenschaften:", err);
+  });
+}
 
 async function initEigenschaftenBootstrapLikeDropdown() {
   const dd = document.querySelector(".dropdown");
   const toggleBtn = document.getElementById("propsToggle");
   const menu = document.getElementById("propsMenu");
 
-  if (!dd || !toggleBtn || !menu) {
-    console.warn("Dropdown Elemente nicht gefunden (dropdown/propsToggle/propsMenu).");
-    return;
-  }
+  if (!dd || !toggleBtn || !menu) return;
 
-  // Badge am Button (z.B. (3))
+  // Badge (Zähler) am Button erstellen
   const badge = document.createElement("span");
   badge.className = "dropdown-badge";
   badge.hidden = true;
+  badge.textContent = "";
   toggleBtn.appendChild(badge);
 
-  // Menü-Header (Titel + Alle)
+  // Header im Dropdown (Titel + "Alle")
   const head = document.createElement("li");
   head.innerHTML = `
     <div class="dropdown-menu__head">
@@ -89,13 +116,13 @@ async function initEigenschaftenBootstrapLikeDropdown() {
 
   const clearBtn = head.querySelector("#propsClearBtn");
 
-  // Öffnen/Schliessen (wie Bootstrap)
+  // Dropdown öffnen/schliessen
   toggleBtn.addEventListener("click", () => {
     const isOpen = dd.classList.toggle("open");
     toggleBtn.setAttribute("aria-expanded", String(isOpen));
   });
 
-  // Klick ausserhalb -> schliessen
+  // Klick ausserhalb schliesst
   document.addEventListener("click", (e) => {
     if (!dd.contains(e.target)) {
       dd.classList.remove("open");
@@ -103,7 +130,7 @@ async function initEigenschaftenBootstrapLikeDropdown() {
     }
   });
 
-  // ESC -> schliessen
+  // ESC schliesst
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       dd.classList.remove("open");
@@ -111,14 +138,13 @@ async function initEigenschaftenBootstrapLikeDropdown() {
     }
   });
 
-  // Daten laden
+  // JSON laden
   const res = await fetch("./daten/eigenschaften.json");
   if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
   const data = await res.json();
-
   const list = Array.isArray(data.eigenschaften) ? data.eigenschaften : [];
 
-  // Nach Gruppen sortieren (Map: gruppe -> items)
+  // Nach Gruppen sortieren
   const byGroup = new Map();
   for (const item of list) {
     if (!item || !item.id || !item.label || !item.gruppe) continue;
@@ -126,7 +152,7 @@ async function initEigenschaftenBootstrapLikeDropdown() {
     byGroup.get(item.gruppe).push(item);
   }
 
-  // Gruppen ins Menü rendern
+  // Gruppen rendern
   for (const [groupName, items] of byGroup.entries()) {
     const groupLi = document.createElement("li");
     groupLi.className = "dropdown-group";
@@ -134,7 +160,6 @@ async function initEigenschaftenBootstrapLikeDropdown() {
     const title = document.createElement("p");
     title.className = "dropdown-group__title";
     title.textContent = groupName;
-
     groupLi.appendChild(title);
 
     for (const entry of items) {
@@ -143,7 +168,11 @@ async function initEigenschaftenBootstrapLikeDropdown() {
 
       const cb = document.createElement("input");
       cb.type = "checkbox";
-      cb.value = entry.id;
+      cb.value = String(entry.id);
+
+      // ✅ Standard: Alles was "prop_enthaelt_" ist, automatisch anhaken
+      // (User kann es danach bewusst abwählen)
+      if (cb.value.startsWith("prop_enthaelt_")) cb.checked = true;
 
       const icon = document.createElement("span");
       icon.className = "dropdown-item__icon";
@@ -164,13 +193,17 @@ async function initEigenschaftenBootstrapLikeDropdown() {
     menu.appendChild(groupLi);
   }
 
-  // Alle klicken -> alles aus
-  clearBtn.addEventListener("click", () => {
-    menu.querySelectorAll('input[type="checkbox"]').forEach((cb) => (cb.checked = false));
-    updateBadgeAndLog();
-  });
+  // "Alle" klick -> alles abwählen
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      menu.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+        cb.checked = false;
+      });
+      updateBadgeAndLog();
+    });
+  }
 
-  // Startzustand
+  // ✅ Startzustand: Badge aktualisieren (nach Auto-Checks)
   updateBadgeAndLog();
 
   function updateBadgeAndLog() {
@@ -182,10 +215,11 @@ async function initEigenschaftenBootstrapLikeDropdown() {
       badge.hidden = true;
       badge.textContent = "";
       console.log("Eigenschaften:", "Alle");
-    } else {
-      badge.hidden = false;
-      badge.textContent = String(checked.length);
-      console.log("Eigenschaften gewählt:", checked);
+      return;
     }
+
+    badge.hidden = false;
+    badge.textContent = String(checked.length);
+    console.log("Eigenschaften gewählt:", checked);
   }
 }
