@@ -1,0 +1,56 @@
+{
+  "naehrstoffe": [
+    {
+      "id": "nutr_protein_g",
+      "label": "Protein",
+      "einheit": "g",
+      "quelle": "rezepte.naehrwerte.pro_portion.protein_g",
+      "icon": "💪"
+    },
+    {
+      "id": "nutr_kcal",
+      "label": "Kalorien",
+      "einheit": "kcal",
+      "quelle": "rezepte.naehrwerte.pro_portion.kcal",
+      "icon": "🔥"
+    },
+    {
+      "id": "nutr_ballaststoffe_g",
+      "label": "Ballaststoffe",
+      "einheit": "g",
+      "quelle": "rezepte.naehrwerte.pro_portion.ballaststoffe_g",
+      "icon": "🌾"
+    },
+    {
+      "id": "nutr_zucker_g",
+      "label": "Zucker",
+      "einheit": "g",
+      "quelle": "rezepte.naehrwerte.pro_portion.zucker_g",
+      "icon": "🍬"
+    },
+    {
+      "id": "nutr_salz_g",
+      "label": "Salz",
+      "einheit": "g",
+      "quelle": "rezepte.naehrwerte.pro_portion.salz_g",
+      "icon": "🧂"
+    },
+
+    {
+      "id": "nutr_eisen_mg",
+      "label": "Eisen",
+      "einheit": "mg",
+      "quelle": "rezepte.naehrwerte.pro_portion.eisen_mg",
+      "icon": "🩸",
+      "todo": "Dieses Feld musst du in rezepte.json ergänzen."
+    },
+    {
+      "id": "nutr_b12_ug",
+      "label": "Vitamin B12",
+      "einheit": "µg",
+      "quelle": "rezepte.naehrwerte.pro_portion.b12_ug",
+      "icon": "🧠",
+      "todo": "Dieses Feld musst du in rezepte.json ergänzen."
+    }
+  ]
+}

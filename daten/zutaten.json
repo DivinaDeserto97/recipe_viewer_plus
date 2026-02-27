@@ -3,7 +3,7 @@
     {
       "id": "salatgurke",
       "name": "Salatgurke",
-      "bilder": { "pfad": "bilder/zutaten/salatgurke.webp", "alt": "Salatgurke" },
+      "bilder": { "pfad": "img/zutaten/salatgurke.png", "alt": "Salatgurke" },
 
       "lagerung": {
         "ort": "Kühlschrank (Gemüsefach)",
@@ -35,7 +35,7 @@
     {
       "id": "ei",
       "name": "Ei",
-      "bilder": { "pfad": "bilder/zutaten/ei.png", "alt": "Ei" },
+      "bilder": { "pfad": "img/zutaten/ei.png", "alt": "Ei" },
       "lagerung": { "ort": "Kühlschrank", "haltbarkeit_tage": 21, "tipps": [] },
       "saison": { "schweiz_monate": [], "alternativ_labels": ["Ganzjährig"] },
       "schlecht_erkennen": ["Schwefeliger Geruch", "Ungewöhnliche Verfärbung"],

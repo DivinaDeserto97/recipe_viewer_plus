@@ -620,8 +620,8 @@ async function initZutatenDropdown(cfg) {
     const nohave = [];
 
     for (const [id, v] of stateById.entries()) {
-      if (v === "allow") allow.push(id);
-      else if (v === "need") need.push(id);
+      if (v === "need") need.push(id);
+      else if (v === "have") have.push(id);
       else if (v === "nohave") nohave.push(id);
     }
 

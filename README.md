@@ -181,8 +181,9 @@ Dadurch bleibt das System: - Wartbar - Erweiterbar - Skalierbar -
 
 ### 3. 🧺 Zutaten-Filter (Was habe ich zuhause?)
 
-- [ ] Mehrere Zutaten auswählbar
-- [ ] Wen alergien Ausgeschaltet zutaten augegraut
+- [x] Mehrere Zutaten auswählbar
+- [x] Wen alergien Ausgeschaltet zutaten augegraut
+- [ ] zuteten info
 
 --------------------------------------------------
 
