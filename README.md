@@ -183,7 +183,7 @@ Dadurch bleibt das System: - Wartbar - Erweiterbar - Skalierbar -
 
 - [x] Mehrere Zutaten auswählbar
 - [x] Wen alergien Ausgeschaltet zutaten augegraut
-- [ ] zuteten info
+- [x] zuteten info
 
 --------------------------------------------------
 
