@@ -76,6 +76,31 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
+    // Nährstoffe Dropdown (Checkboxen) + "relativ hohe Werte" (Ranking)
+  initCheckboxDropdown({
+    dropdownId: "nutrDropdown",
+    toggleId: "nutrToggle",
+    menuId: "nutrMenu",
+    title: "Nährstoffe",
+    clearText: "Alle",
+    jsonUrl: "./daten/naehrstoffe.json",
+    arrayKey: "naehrstoffe",
+    defaultChecked: () => false,
+    onChangeLogPrefix: "Nährstoffe",
+
+    // Anzeige: Icon + Einheit
+    formatLabel: (entry) => {
+      const label = String(entry.label || "");
+      const unit = entry.einheit ? ` (${entry.einheit})` : "";
+      return `${label}${unit}`;
+    },
+
+    // wenn Auswahl ändert -> Ranking updaten
+    onSelectionChange: (checkedIds) => {
+      updateNaehrstoffRanking(checkedIds);
+    },
+  });
+
   // Zutaten Dropdown (3 Zustände + Info + Sperren durch Eigenschaften)
   initZutatenDropdown({
     dropdownId: "zutatenDropdown",
@@ -292,18 +317,6 @@ async function initCheckboxDropdown(cfg) {
   }
 
   // "Alle" -> Standardzustand wiederherstellen
-  // ✅ Standard: alles auf "kann enthalten"
-  for (const z of items) {
-    stateById.set(String(z.id), "allow");
-    const li = menu.querySelector(`li.dropdown-item--ingredient[data-ingredient-id="${CSS.escape(String(z.id))}"]`);
-    if (li) {
-      li.querySelectorAll(".ingredient-state-btn").forEach((b) => {
-        const isActive = b.dataset.state === "allow";
-        b.dataset.active = isActive ? "1" : "0";
-        b.setAttribute("aria-pressed", isActive ? "true" : "false");
-      });
-    }
-  }
 
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
@@ -402,6 +415,11 @@ async function initCheckboxDropdown(cfg) {
       badge.hidden = false;
       badge.textContent = String(checked.length);
       console.log(`${cfg.onChangeLogPrefix} gewählt:`, checked);
+    }
+
+    // optional callback (z.B. Nährstoffe Ranking)
+    if (typeof cfg.onSelectionChange === "function") {
+      cfg.onSelectionChange(checked);
     }
   }
 }
@@ -626,12 +644,12 @@ async function initZutatenDropdown(cfg) {
     }
 
     window.REZEPTE_FILTER = window.REZEPTE_FILTER || {};
+    window.REZEPTE_FILTER.zutaten_allow = allow;
     window.REZEPTE_FILTER.zutaten_need = need;
-    window.REZEPTE_FILTER.zutaten_have = have;
     window.REZEPTE_FILTER.zutaten_nohave = nohave;
 
+    console.log("Zutaten (allow):", allow);
     console.log("Zutaten (need):", need);
-    console.log("Zutaten (have):", have);
     console.log("Zutaten (nohave):", nohave);
   }
 
@@ -664,12 +682,13 @@ async function initZutatenDropdown(cfg) {
       li.style.pointerEvents = disabled ? "none" : "";
       li.title = disabled ? `Gesperrt wegen: ${hits.join(", ")}` : "";
 
-      // wenn gesperrt: Zustand löschen
+      // wenn gesperrt: Zustand zurück auf Standard ("allow")
       if (disabled) {
-        stateById.set(id, "");
+        stateById.set(id, "allow");
         li.querySelectorAll(".ingredient-state-btn").forEach((b) => {
-          b.dataset.active = "0";
-          b.setAttribute("aria-pressed", "false");
+          const isActive = b.dataset.state === "allow";
+          b.dataset.active = isActive ? "1" : "0";
+          b.setAttribute("aria-pressed", isActive ? "true" : "false");
         });
       }
     });
@@ -781,4 +800,113 @@ function formatCoins(preisObj) {
   if (km > 0) parts.push(`${km} KM`);
 
   return parts.join(", ");
+}
+
+// ============================================================
+// Nährstoff-Ranking (UI zuerst: Badge + Console, keine Rezeptliste)
+// ============================================================
+
+let __CACHE_REZEPTE = null;
+let __CACHE_NAEHRSTOFFE = null;
+
+async function loadRezepteOnce() {
+  if (__CACHE_REZEPTE) return __CACHE_REZEPTE;
+  const res = await fetch("./daten/rezepte.json");
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+  const data = await res.json();
+  __CACHE_REZEPTE = Array.isArray(data?.rezepte) ? data.rezepte : [];
+  return __CACHE_REZEPTE;
+}
+
+async function loadNaehrstoffeOnce() {
+  if (__CACHE_NAEHRSTOFFE) return __CACHE_NAEHRSTOFFE;
+  const res = await fetch("./daten/naehrstoffe.json");
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+  const data = await res.json();
+  __CACHE_NAEHRSTOFFE = Array.isArray(data?.naehrstoffe) ? data.naehrstoffe : [];
+  return __CACHE_NAEHRSTOFFE;
+}
+
+// path helper: "rezepte.naehrwerte.pro_portion.protein_g" -> recipe.naehrwerte.pro_portion.protein_g
+function getByPath(obj, path) {
+  if (!obj || !path) return 0;
+
+  let p = String(path);
+  if (p.startsWith("rezepte.")) p = p.slice("rezepte.".length);
+
+  const parts = p.split(".");
+  let cur = obj;
+  for (const key of parts) {
+    if (cur && Object.prototype.hasOwnProperty.call(cur, key)) cur = cur[key];
+    else return 0;
+  }
+
+  const n = Number(cur);
+  return Number.isFinite(n) ? n : 0;
+}
+
+async function updateNaehrstoffRanking(selectedNutrIds) {
+  window.REZEPTE_FILTER = window.REZEPTE_FILTER || {};
+  window.REZEPTE_FILTER.naehrstoffe_selected = (selectedNutrIds || []).map(String);
+
+  const ids = window.REZEPTE_FILTER.naehrstoffe_selected;
+
+  if (!ids.length) {
+    console.log("Nährstoffe: keine Auswahl -> kein Ranking");
+    return;
+  }
+
+  const [rezepte, naehrstoffe] = await Promise.all([loadRezepteOnce(), loadNaehrstoffeOnce()]);
+
+  const nutrMap = new Map(naehrstoffe.map((n) => [String(n.id), n]));
+  const selected = ids.map((id) => nutrMap.get(id)).filter(Boolean);
+
+  // Max pro Nährstoff (für relativen Vergleich)
+  const maxById = new Map();
+  for (const n of selected) {
+    const q = String(n.quelle || "");
+    let max = 0;
+    for (const r of rezepte) {
+      const v = getByPath(r, q);
+      if (v > max) max = v;
+    }
+    maxById.set(String(n.id), max);
+  }
+
+  // Score pro Rezept: Summe(value/max) über gewählte Nährstoffe
+  const scored = rezepte.map((r) => {
+    let score = 0;
+    const details = {};
+    for (const n of selected) {
+      const id = String(n.id);
+      const max = Number(maxById.get(id) || 0);
+      const v = getByPath(r, n.quelle);
+      const rel = max > 0 ? v / max : 0;
+      score += rel;
+      details[id] = { v, rel };
+    }
+    return {
+      id: String(r.id || ""),
+      titel: String(r.titel || r?.meta?.title || ""),
+      score,
+      details,
+    };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+
+  console.log("Nährstoff-Ranking (relativ hoch, pro Portion):");
+  console.log(
+    "Auswahl:",
+    selected.map((n) => `${n.icon || ""} ${n.label} (${n.einheit || ""})`).join(" | "),
+  );
+
+  console.log(
+    "Top 5:",
+    scored.slice(0, 5).map((x) => ({
+      id: x.id,
+      titel: x.titel,
+      score: Number(x.score.toFixed(3)),
+    })),
+  );
 }

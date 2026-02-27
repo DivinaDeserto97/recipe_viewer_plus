@@ -5,35 +5,36 @@
       "label": "Protein",
       "einheit": "g",
       "quelle": "rezepte.naehrwerte.pro_portion.protein_g",
-      "icon": "💪"
+      "icon": "💪",
+      "gruppe": "Proteine"
     },
+
     {
-      "id": "nutr_kcal",
-      "label": "Kalorien",
-      "einheit": "kcal",
-      "quelle": "rezepte.naehrwerte.pro_portion.kcal",
-      "icon": "🔥"
-    },
-    {
-      "id": "nutr_ballaststoffe_g",
-      "label": "Ballaststoffe",
+      "id": "nutr_fett_g",
+      "label": "Fett",
       "einheit": "g",
-      "quelle": "rezepte.naehrwerte.pro_portion.ballaststoffe_g",
-      "icon": "🌾"
+      "quelle": "rezepte.naehrwerte.pro_portion.fett_g",
+      "icon": "🧈",
+      "gruppe": "Fette"
     },
+
     {
       "id": "nutr_zucker_g",
       "label": "Zucker",
       "einheit": "g",
       "quelle": "rezepte.naehrwerte.pro_portion.zucker_g",
-      "icon": "🍬"
+      "icon": "🍬",
+      "gruppe": "Zucker"
     },
+
     {
-      "id": "nutr_salz_g",
-      "label": "Salz",
-      "einheit": "g",
-      "quelle": "rezepte.naehrwerte.pro_portion.salz_g",
-      "icon": "🧂"
+      "id": "nutr_wasser_ml",
+      "label": "Wasser",
+      "einheit": "ml",
+      "quelle": "rezepte.naehrwerte.pro_portion.wasser_ml",
+      "icon": "💧",
+      "gruppe": "Wasser",
+      "todo": "Optional: Feld in rezepte.json ergänzen."
     },
 
     {
@@ -42,15 +43,73 @@
       "einheit": "mg",
       "quelle": "rezepte.naehrwerte.pro_portion.eisen_mg",
       "icon": "🩸",
-      "todo": "Dieses Feld musst du in rezepte.json ergänzen."
+      "gruppe": "Spurenelemente",
+      "todo": "Optional: Feld in rezepte.json ergänzen."
     },
+    {
+      "id": "nutr_zink_mg",
+      "label": "Zink",
+      "einheit": "mg",
+      "quelle": "rezepte.naehrwerte.pro_portion.zink_mg",
+      "icon": "🛡️",
+      "gruppe": "Spurenelemente",
+      "todo": "Optional: Feld in rezepte.json ergänzen."
+    },
+
+    {
+      "id": "nutr_calcium_mg",
+      "label": "Calcium",
+      "einheit": "mg",
+      "quelle": "rezepte.naehrwerte.pro_portion.calcium_mg",
+      "icon": "🦴",
+      "gruppe": "Mengenelemente",
+      "todo": "Optional: Feld in rezepte.json ergänzen."
+    },
+    {
+      "id": "nutr_magnesium_mg",
+      "label": "Magnesium",
+      "einheit": "mg",
+      "quelle": "rezepte.naehrwerte.pro_portion.magnesium_mg",
+      "icon": "⚡",
+      "gruppe": "Mengenelemente",
+      "todo": "Optional: Feld in rezepte.json ergänzen."
+    },
+    {
+      "id": "nutr_kalium_mg",
+      "label": "Kalium",
+      "einheit": "mg",
+      "quelle": "rezepte.naehrwerte.pro_portion.kalium_mg",
+      "icon": "🍌",
+      "gruppe": "Mengenelemente",
+      "todo": "Optional: Feld in rezepte.json ergänzen."
+    },
+
     {
       "id": "nutr_b12_ug",
       "label": "Vitamin B12",
       "einheit": "µg",
       "quelle": "rezepte.naehrwerte.pro_portion.b12_ug",
       "icon": "🧠",
-      "todo": "Dieses Feld musst du in rezepte.json ergänzen."
+      "gruppe": "Vitamine",
+      "todo": "Optional: Feld in rezepte.json ergänzen."
+    },
+    {
+      "id": "nutr_vit_c_mg",
+      "label": "Vitamin C",
+      "einheit": "mg",
+      "quelle": "rezepte.naehrwerte.pro_portion.vit_c_mg",
+      "icon": "🍊",
+      "gruppe": "Vitamine",
+      "todo": "Optional: Feld in rezepte.json ergänzen."
+    },
+    {
+      "id": "nutr_vit_d_ug",
+      "label": "Vitamin D",
+      "einheit": "µg",
+      "quelle": "rezepte.naehrwerte.pro_portion.vit_d_ug",
+      "icon": "☀️",
+      "gruppe": "Vitamine",
+      "todo": "Optional: Feld in rezepte.json ergänzen."
     }
   ]
 }
