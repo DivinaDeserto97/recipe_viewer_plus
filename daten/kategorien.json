@@ -1,0 +1,13 @@
+{
+  "kategorien": [
+    { "id": "kat_sommer", "label": "Sommer", "gruppe": "Saisongefühl" },
+    { "id": "kat_winter", "label": "Winter", "gruppe": "Saisongefühl" },
+
+    { "id": "kat_salat", "label": "Salat", "gruppe": "Gericht" },
+    { "id": "kat_suppe", "label": "Suppe", "gruppe": "Gericht" },
+    { "id": "kat_dessert", "label": "Dessert", "gruppe": "Gericht" },
+
+    { "id": "kat_sattmacher", "label": "Sattmacher", "gruppe": "Effekt" },
+    { "id": "kat_schnell", "label": "Schnell", "gruppe": "Effekt" }
+  ]
+}

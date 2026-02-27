@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app-header {
+  background: var(--header);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.logo {
+  font-size: var(--font-size-logo);
+  font-weight: bold;
+}
+
+.search {
+  flex: 1;
+  min-width: 240px;
+}
+
+.search input {
+  width: 100%;
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rezepte</title>
+
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
+
+  <body>
+    <header class="app-header">
+      <div class="logo">Rezepte</div>
+
+      <div class="search">
+        <input type="text" placeholder="Suche Rezept..." />
+      </div>
+
+      <div class="filters">
+        <select id="seasonSelect" class="select">
+          <option value="">Alle</option>
+        </select>
+
+        <div class="dropdown">
+          <button
+            class="dropdown-toggle"
+            type="button"
+            id="propsToggle"
+            aria-expanded="false"
+          >
+            Eigenschaften
+          </button>
+
+          <ul
+            class="dropdown-menu"
+            id="propsMenu"
+            aria-labelledby="propsToggle"
+          >
+            <!-- wird per JS befüllt -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- B1 -->
+      <button class="toggle" id="themeToggle" aria-label="Theme wechseln">
+        🌙
+      </button>
+    </header>
+
+    <script src="./js/startseite.js"></script>
+  </body>
+</html>

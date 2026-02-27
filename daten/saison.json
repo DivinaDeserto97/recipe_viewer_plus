@@ -1,0 +1,21 @@
+{
+  "saison_labels": [
+    { "id": "saison_fruehling", "label": "Frühling", "monate": [3,4,5] },
+    { "id": "saison_sommer", "label": "Sommer", "monate": [6,7,8] },
+    { "id": "saison_herbst", "label": "Herbst", "monate": [9,10,11] },
+    { "id": "saison_winter", "label": "Winter", "monate": [12,1,2] },
+
+    { "id": "monat_januar", "label": "Januar", "monate": [1] },
+    { "id": "monat_februar", "label": "Februar", "monate": [2] },
+    { "id": "monat_maerz", "label": "März", "monate": [3] },
+    { "id": "monat_april", "label": "April", "monate": [4] },
+    { "id": "monat_mai", "label": "Mai", "monate": [5] },
+    { "id": "monat_juni", "label": "Juni", "monate": [6] },
+    { "id": "monat_juli", "label": "Juli", "monate": [7] },
+    { "id": "monat_august", "label": "August", "monate": [8] },
+    { "id": "monat_september", "label": "September", "monate": [9] },
+    { "id": "monat_oktober", "label": "Oktober", "monate": [10] },
+    { "id": "monat_november", "label": "November", "monate": [11] },
+    { "id": "monat_dezember", "label": "Dezember", "monate": [12] }
+  ]
+}

@@ -1,0 +1,35 @@
+:root {
+  /* Typography */
+  --font-family: Arial, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --font-size-base: 14px;
+  --font-size-logo: 20px;
+
+  /* Spacing */
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 12px;
+  --space-4: 20px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+
+  /* Borders */
+  --border-width: 1px;
+  --border-color: #ccc;
+
+  /* Theme tokens (Light default) */
+  --bg: #ffffff;
+  --text: #111111;
+  --header: #f4f4f4;
+  --accent: #2c7a7b;
+
+  /* Inputs */
+  --input-bg: #ffffff;
+  --input-text: #111111;
+  --input-border: #a9a9a9;
+
+  /* Focus */
+  --focus-ring: 0 0 0 3px rgba(44, 122, 123, 0.25);
+}

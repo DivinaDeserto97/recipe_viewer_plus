@@ -1,0 +1,13 @@
+body.dark {
+  --bg: #1e1e1e;
+  --text: #f5f5f5;
+  --header: #2a2a2a;
+  --accent: #4fd1c5;
+
+  --input-bg: #1f1f1f;
+  --input-text: #f5f5f5;
+  --input-border: #6b6b6b;
+
+  /* Fokus Ring im Dark etwas heller */
+  --focus-ring: 0 0 0 3px rgba(79, 209, 197, 0.25);
+}

@@ -1,0 +1,16 @@
+{
+  "lore": [
+    { "id": "race_halblinge", "label": "Halblinge", "gruppe": "Rasse", "icon": "🧑‍🌾" },
+    { "id": "race_zwerge", "label": "Zwerge", "gruppe": "Rasse", "icon": "⛏️" },
+    { "id": "race_menschen", "label": "Menschen", "gruppe": "Rasse", "icon": "🧑" },
+
+    { "id": "land_menschenhuegel", "label": "Menschenhügel", "gruppe": "Land", "icon": "🗺️" },
+    { "id": "land_zwergenstollen", "label": "Zwergenstollen", "gruppe": "Land", "icon": "🪨" },
+
+    { "id": "culture_grenzland", "label": "Grenzland", "gruppe": "Kultur", "icon": "🏞️" },
+
+    { "id": "preis_guenstig", "label": "Günstig 1 kupfer münze", "gruppe": "Preis", "icon": "💰" },
+    { "id": "preis_mittel", "label": "Mittel", "gruppe": "Preis", "icon": "💰💰" },
+    { "id": "preis_teuer", "label": "Teuer", "gruppe": "Preis", "icon": "💰💰💰" }
+  ]
+}

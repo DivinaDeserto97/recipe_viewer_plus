@@ -1,0 +1,11 @@
+/* Light ist schon Default in variablen.css – hier optional Zusatz */
+body:not(.dark) {
+  --bg: #ffffff;
+  --text: #111111;
+  --header: #f4f4f4;
+  --accent: #2c7a7b;
+
+  --input-bg: #ffffff;
+  --input-text: #111111;
+  --input-border: #a9a9a9;
+}

@@ -1,0 +1,178 @@
+{
+  "rezepte": [
+    {
+      "id": "recipe-gurkensalat-kartoffel-ei-balsamico-001",
+      "sprache": "de-CH",
+
+      "titel": "Satter Gurkensalat mit Kartoffeln, Ei & Radiesli (Balsamico-Senf)",
+      "bild": {
+        "pfad": "bilder/rezepte/gurkensalat.png",
+        "alt": "Gurkensalat mit Kartoffeln und Ei"
+      },
+
+      "basis_portionen": 2,
+
+      "zeit": {
+        "gesamt_min": 35,
+        "aktiv_min": 15,
+        "ruhe_min": 20
+      },
+
+      "schwierigkeit": "leicht",
+
+      "ausruestung": [
+        "Schüssel",
+        "Sieb",
+        "Messer",
+        "Schneidebrett",
+        "kleines Töpfchen oder Schraubglas für Dressing",
+        "Löffel",
+        "Topf für Kartoffeln",
+        "Topf für Eier"
+      ],
+
+      "tags": {
+        "eigenschaften": ["prop_vegetarisch", "prop_glutenfrei", "prop_mealprep", "prop_picknick"],
+        "kategorien": ["kat_sommer", "kat_salat", "kat_sattmacher"],
+        "lore": ["race_halblinge", "race_zwerge", "race_menschen", "culture_grenzland", "preis_guenstig"]
+      },
+
+      "allergene": {
+        "enthaelt": ["alg_ei", "alg_senf"],
+        "kann_enthalten": [],
+        "hinweise": "Wenn du Honig ersetzen willst: Zucker oder Ahornsirup geht."
+      },
+
+      "inhalt": {
+        "geschichte": {
+          "setting": "Grenzland zwischen Menschenhügeln und Zwergenstollen",
+          "kurzgeschichte": "Wenn der Markt schliesst und die Wege unsicher werden, braucht man etwas, das frisch ist – aber dennoch Kraft gibt ...",
+          "ritual": [
+            "Erst umrühren, dann 10 Atemzüge warten.",
+            "Pfeffer erst zum Schluss – das gilt als Wächter-Regel."
+          ]
+        },
+
+        "zutatenlisten": [
+          {
+            "typ": "basis",
+            "name": "Basis",
+            "position": 1,
+            "posten": [
+              { "zutat_id": "salatgurke", "menge": 1, "einheit": "stk", "zubereitung": "in feine Scheiben" },
+              { "zutat_id": "radiesli", "menge": 6, "einheit": "stk", "zubereitung": "in feine Scheiben" },
+              { "zutat_id": "weisse_zwiebel", "menge": 1, "einheit": "stk", "zubereitung": "sehr fein gehackt; kurz gewässert" },
+              { "zutat_id": "kartoffel_festkochend", "menge": 300, "einheit": "g", "zubereitung": "gekocht, abgekühlt, in Scheiben" },
+              { "zutat_id": "ei", "menge": 3, "einheit": "stk", "zubereitung": "hart gekocht" }
+            ]
+          },
+          {
+            "typ": "mix",
+            "name": "Gurke entwässern (Mix)",
+            "position": 1,
+            "posten": [
+              { "zutat_id": "salz", "menge": 1, "einheit": "tl", "hinweis": "nur zum Wasserziehen" },
+              { "zutat_id": "zucker", "menge": 1, "einheit": "tl", "hinweis": "optional, unterstützt Osmose" }
+            ]
+          },
+          {
+            "typ": "dressing",
+            "name": "Dressing",
+            "position": 1,
+            "posten": [
+              { "zutat_id": "aceto_balsamico", "menge": 4, "einheit": "el" },
+              { "zutat_id": "rapsoel", "menge": 6, "einheit": "el", "hinweis": "leichter: 4 EL" },
+              { "zutat_id": "honig", "menge": 2, "einheit": "tl" },
+              { "zutat_id": "senf", "menge": 1, "einheit": "tl" },
+              { "zutat_id": "zitronensaft", "menge": 0.5, "einheit": "tl" },
+              { "zutat_id": "pfeffer", "menge": 1, "einheit": "prise", "hinweis": "am Schluss" }
+            ]
+          }
+        ],
+
+        "schritte": [
+          {
+            "typ": "basis",
+            "name": "Basis",
+            "schritte": [
+              {
+                "nr": 1,
+                "titel": "Kartoffeln und Eier kochen",
+                "zeit_min": 20,
+                "text": [
+                  "Kartoffeln in Salzwasser weich kochen (ca. 15–20 Min).",
+                  "Eier hart kochen (ca. 9–10 Min).",
+                  "Beides abgiessen und abkühlen lassen."
+                ],
+                "kontrolle": [
+                  "Kartoffel bleibt stabil.",
+                  "Ei ist hart (kein weicher Kern)."
+                ]
+              },
+              {
+                "nr": 2,
+                "titel": "Gurke entwässern",
+                "zeit_min": 10,
+                "text": [
+                  "Gurkenscheiben in Schüssel.",
+                  "Salz+Zucker mischen.",
+                  "10 Min stehen lassen.",
+                  "Wasser abgiessen, leicht ausdrücken."
+                ],
+                "kontrolle": [
+                  "Wasser sichtbar.",
+                  "Gurke bleibt knackig."
+                ],
+                "hinweis": "Nicht auswaschen – sonst verliert die Gurke Geschmack."
+              }
+            ]
+          }
+        ]
+      },
+
+      "varianten": [
+        {
+          "id": "var_zwerg",
+          "name": "Zwergen-Variante: Herzhaft & robust",
+          "aenderungen": {
+            "zutaten_delta": [
+              { "zutat_id": "sonnenblumenkerne", "menge": 1, "einheit": "el", "aktion": "hinzufuegen", "optional": true }
+            ],
+            "schritte_hinweise": [
+              "Mehr Pfeffer, evtl. Paprika."
+            ]
+          }
+        }
+      ],
+
+      "lagerung": {
+        "haltbarkeit_kuehlschrank_tage": 2,
+        "beste_qualitaet_tage": 1,
+        "lager_tipps": [
+          "Eier separat lagern, dann bleiben sie schöner.",
+          "Dressing separat lagern für mehr Knackigkeit."
+        ],
+        "schlecht_erkennen": [
+          "Starker saurer/komischer Geruch",
+          "Schleimige Gurke oder matschige Kartoffeln",
+          "Verfärbungen, Schimmel"
+        ]
+      },
+
+      "naehrwerte": {
+        "hinweis": "Näherungswerte",
+        "gesamt": { "kcal": 1130, "protein_g": 28, "fett_g": 88, "kh_g": 62, "ballaststoffe_g": 10, "zucker_g": 20, "salz_g": 3.5 },
+        "pro_portion": { "portionen": 2, "kcal": 565, "protein_g": 14, "fett_g": 44, "kh_g": 31, "ballaststoffe_g": 5, "zucker_g": 10, "salz_g": 1.8 }
+      },
+
+      "einkaufsliste": {
+        "gruppen": [
+          { "gruppe": "Frisch", "posten": ["salatgurke", "radiesli", "weisse_zwiebel", "zitrone"] },
+          { "gruppe": "Vorrat", "posten": ["aceto_balsamico", "rapsoel", "honig", "senf", "salz", "pfeffer", "zucker"] },
+          { "gruppe": "Protein", "posten": ["ei"] },
+          { "gruppe": "Sattmacher", "posten": ["kartoffel_festkochend"] }
+        ]
+      }
+    }
+  ]
+}

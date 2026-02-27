@@ -1,0 +1,53 @@
+{
+  "zutaten": [
+    {
+      "id": "salatgurke",
+      "name": "Salatgurke",
+      "bilder": { "pfad": "bilder/zutaten/salatgurke.webp", "alt": "Salatgurke" },
+
+      "lagerung": {
+        "ort": "Kühlschrank (Gemüsefach)",
+        "haltbarkeit_tage": 5,
+        "tipps": ["Nicht neben Äpfeln lagern (kann schneller altern)."]
+      },
+
+      "saison": {
+        "schweiz_monate": [5, 6, 7, 8, 9],
+        "alternativ_labels": ["Sommer"]
+      },
+
+      "schlecht_erkennen": [
+        "Schleimige Oberfläche",
+        "Weiche Stellen",
+        "Starker Geruch"
+      ],
+
+      "naehrwerte_pro_100g": {
+        "kcal": 12,
+        "protein_g": 0.7,
+        "fett_g": 0.1,
+        "kh_g": 1.8
+      },
+
+      "allergene_ids": []
+    },
+
+    {
+      "id": "ei",
+      "name": "Ei",
+      "bilder": { "pfad": "bilder/zutaten/ei.png", "alt": "Ei" },
+      "lagerung": { "ort": "Kühlschrank", "haltbarkeit_tage": 21, "tipps": [] },
+      "saison": { "schweiz_monate": [], "alternativ_labels": ["Ganzjährig"] },
+      "schlecht_erkennen": ["Schwefeliger Geruch", "Ungewöhnliche Verfärbung"],
+      "naehrwerte_pro_100g": { "kcal": 143, "protein_g": 13, "fett_g": 10, "kh_g": 1.1 },
+      "allergene_ids": ["alg_ei"]
+    }
+  ],
+
+  "allergene": [
+    { "id": "alg_ei", "label": "Ei" },
+    { "id": "alg_senf", "label": "Senf" },
+    { "id": "alg_gluten", "label": "Gluten" },
+    { "id": "alg_laktose", "label": "Laktose" }
+  ]
+}

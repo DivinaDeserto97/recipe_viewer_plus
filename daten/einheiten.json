@@ -1,0 +1,11 @@
+{
+  "einheiten": [
+    { "id": "g", "label": "g" },
+    { "id": "ml", "label": "ml" },
+    { "id": "stk", "label": "Stück" },
+    { "id": "tl", "label": "TL" },
+    { "id": "el", "label": "EL" },
+    { "id": "prise", "label": "Prise" },
+    { "id": "handvoll", "label": "Handvoll" }
+  ]
+}

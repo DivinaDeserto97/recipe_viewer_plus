@@ -1,0 +1,14 @@
+{
+  "eigenschaften": [
+    { "id": "prop_glutenfrei", "label": "Glutenfrei", "gruppe": "Allergie/Unverträglichkeit", "icon": "🌾🚫" },
+    { "id": "prop_laktosefrei", "label": "Laktosefrei", "gruppe": "Allergie/Unverträglichkeit", "icon": "🥛🚫" },
+
+    { "id": "prop_vegetarisch", "label": "Vegetarisch", "gruppe": "Ernährung", "icon": "🥦" },
+    { "id": "prop_vegan", "label": "Vegan", "gruppe": "Ernährung", "icon": "🌱" },
+
+    { "id": "prop_mealprep", "label": "Meal-Prep", "gruppe": "Verwendung", "icon": "📦" },
+    { "id": "prop_grillen", "label": "Grillen", "gruppe": "Verwendung", "icon": "🔥" },
+    { "id": "prop_picknick", "label": "Picknick", "gruppe": "Verwendung", "icon": "🧺" },
+    { "id": "prop_unterwegs", "label": "Unterwegs", "gruppe": "Verwendung", "icon": "🎒" }
+  ]
+}
