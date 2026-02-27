@@ -244,3 +244,107 @@ body.dark .dropdown-item:hover {
   font-size: 12px;
   line-height: 1;
 }
+
+/* ============================================================
+   Zutaten Dropdown: 3-State UI (klarer aktiv/inaktiv)
+   ============================================================ */
+
+.dropdown-item--ingredient {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dropdown-item--ingredient .dropdown-item__text {
+  font-weight: 600;
+  min-width: 120px;
+}
+
+/* Info Button (links) */
+.ingredient-info-btn {
+  width: 36px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ingredient-info-btn:focus {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-color: var(--accent);
+}
+
+/* 3-State Buttons rechts */
+.ingredient-state-controls {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 6px;
+}
+
+/* Basis: inaktiv = bewusst "blass" */
+.ingredient-state-btn {
+  width: 44px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0.45;
+  filter: grayscale(0.25);
+}
+
+.ingredient-state-btn:hover {
+  opacity: 0.75;
+}
+
+.ingredient-state-btn:focus {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-color: var(--accent);
+}
+
+/* Aktiv: sehr klar */
+.ingredient-state-btn[data-active="1"] {
+  opacity: 1;
+  filter: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(44, 122, 123, 0.18);
+}
+
+/* Aktiv: zusätzlich pro Zustand leicht unterscheiden */
+.ingredient-state-btn[data-state="need"][data-active="1"] {
+  background: rgba(255, 215, 0, 0.22); /* gelblich */
+}
+
+.ingredient-state-btn[data-state="have"][data-active="1"] {
+  background: rgba(0, 180, 0, 0.16); /* grünlich */
+}
+
+.ingredient-state-btn[data-state="nohave"][data-active="1"] {
+  background: rgba(220, 0, 0, 0.14); /* rötlich */
+}
+
+/* Optional: ganze Zeile leicht markieren (dezent) */
+.dropdown-item--ingredient:has(.ingredient-state-btn[data-active="1"][data-state="need"]) {
+  background: rgba(255, 215, 0, 0.08);
+}
+
+.dropdown-item--ingredient:has(.ingredient-state-btn[data-active="1"][data-state="have"]) {
+  background: rgba(0, 180, 0, 0.06);
+}
+
+.dropdown-item--ingredient:has(.ingredient-state-btn[data-active="1"][data-state="nohave"]) {
+  background: rgba(220, 0, 0, 0.06);
+}

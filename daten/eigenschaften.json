@@ -1,16 +1,83 @@
 {
   "eigenschaften": [
-    { "id": "prop_enthaelt_gluten", "label": "Enthält Gluten", "gruppe": "Allergen (enthält)", "icon": "🌾" },
-    { "id": "prop_enthaelt_laktose", "label": "Enthält Laktose", "gruppe": "Allergen (enthält)", "icon": "🥛" },
-    { "id": "prop_enthaelt_ei", "label": "Enthält Ei", "gruppe": "Allergen (enthält)", "icon": "🥚" },
-    { "id": "prop_enthaelt_senf", "label": "Enthält Senf", "gruppe": "Allergen (enthält)", "icon": "🌭" },
+    {
+      "id": "prop_enthaelt_gluten",
+      "label": "Enthält Gluten",
+      "gruppe": "Allergen (enthält)",
+      "icon": "🌾"
+    },
+    {
+      "id": "prop_enthaelt_laktose",
+      "label": "Enthält Laktose",
+      "gruppe": "Allergen (enthält)",
+      "icon": "🥛"
+    },
+    {
+      "id": "prop_enthaelt_ei",
+      "label": "Enthält Ei",
+      "gruppe": "Allergen (enthält)",
+      "icon": "🥚"
+    },
+    {
+      "id": "prop_enthaelt_senf",
+      "label": "Enthält Senf",
+      "gruppe": "Allergen (enthält)",
+      "icon": "🌭"
+    },
 
-    { "id": "prop_vegetarisch", "label": "Vegetarisch", "gruppe": "Ernährung", "icon": "🥦" },
-    { "id": "prop_vegan", "label": "Vegan", "gruppe": "Ernährung", "icon": "🌱" },
+    {
+      "id": "prop_trigger_gurke",
+      "label": "Gurke (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Spezialfälle",
+      "icon": "🥒",
+      "prioritaet": 10
+    },
+    {
+      "id": "prop_trigger_pfefferoni",
+      "label": "Peperoni (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Spezialfälle",
+      "icon": "🌶️",
+      "prioritaet": 20
+    },
 
-    { "id": "prop_mealprep", "label": "Meal-Prep", "gruppe": "Verwendung", "icon": "📦" },
-    { "id": "prop_grillen", "label": "Grillen", "gruppe": "Verwendung", "icon": "🔥" },
-    { "id": "prop_picknick", "label": "Picknick", "gruppe": "Verwendung", "icon": "🧺" },
-    { "id": "prop_unterwegs", "label": "Unterwegs", "gruppe": "Verwendung", "icon": "🎒" }
+    {
+      "id": "prop_vegetarisch",
+      "label": "Vegetarisch",
+      "gruppe": "Ernährung",
+      "icon": "🥦"
+    },
+    {
+      "id": "prop_vegan",
+      "label": "Vegan",
+      "gruppe": "Ernährung",
+      "icon": "🌱"
+    },
+
+    {
+      "id": "prop_mealprep",
+      "label": "Meal-Prep",
+      "gruppe": "Verwendung",
+      "icon": "📦"
+    },
+    {
+      "id": "prop_grillen",
+      "label": "Grillen",
+      "gruppe": "Verwendung",
+      "icon": "🔥"
+    },
+    {
+      "id": "prop_picknick",
+      "label": "Picknick",
+      "gruppe": "Verwendung",
+      "icon": "🧺"
+    },
+    {
+      "id": "prop_unterwegs",
+      "label": "Unterwegs",
+      "gruppe": "Verwendung",
+      "icon": "🎒"
+    }
   ]
 }
