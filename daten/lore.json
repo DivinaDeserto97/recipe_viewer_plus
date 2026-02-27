@@ -1,16 +1,77 @@
 {
   "lore": [
-    { "id": "race_halblinge", "label": "Halblinge", "gruppe": "Rasse", "icon": "🧑‍🌾" },
-    { "id": "race_zwerge", "label": "Zwerge", "gruppe": "Rasse", "icon": "⛏️" },
-    { "id": "race_menschen", "label": "Menschen", "gruppe": "Rasse", "icon": "🧑" },
+    {
+      "id": "preis_Armlich",
+      "label": "Ärmlich",
+      "gruppe": "Preis",
+      "preis": { "km": 1 }
+    },
+    {
+      "id": "preis_Schlecht",
+      "label": "Schlecht",
+      "gruppe": "Preis",
+      "preis": { "km": 2 }
+    },
+    {
+      "id": "preis_Einfach",
+      "label": "Einfach",
+      "gruppe": "Preis",
+      "preis": { "sm": 1 }
+    },
+    {
+      "id": "preis_Komfortabel",
+      "label": "Komfortabel",
+      "gruppe": "Preis",
+      "preis": { "sm": 1, "km": 7 }
+    },
+    {
+      "id": "preis_Wohlhabend",
+      "label": "Wohlhabend",
+      "gruppe": "Preis",
+      "preis": { "sm": 2, "km": 7 }
+    },
+    {
+      "id": "preis_Edel",
+      "label": "Edel",
+      "gruppe": "Preis",
+      "preis": { "sm": 6, "km": 7 }
+    },
 
-    { "id": "land_menschenhuegel", "label": "Menschenhügel", "gruppe": "Land", "icon": "🗺️" },
-    { "id": "land_zwergenstollen", "label": "Zwergenstollen", "gruppe": "Land", "icon": "🪨" },
+    { "id": "race_Elf", "label": "Elf", "gruppe": "Rasse" },
+    { "id": "race_Halbling", "label": "Halblinge", "gruppe": "Rasse" },
+    { "id": "race_Mensch", "label": "Menschen", "gruppe": "Rasse" },
+    { "id": "race_Zwerg", "label": "Zwerge", "gruppe": "Rasse" },
+    {
+      "id": "race_Drachenbluetig",
+      "label": "Drachenblütige",
+      "gruppe": "Rasse"
+    },
+    { "id": "race_Gnom", "label": "Gnome", "gruppe": "Rasse" },
+    { "id": "race_Halbelf", "label": "Halbelfen", "gruppe": "Rasse" },
+    { "id": "race_Halbork", "label": "Halborks", "gruppe": "Rasse" },
+    { "id": "race_Tiefling", "label": "Tieflinge", "gruppe": "Rasse" },
 
-    { "id": "culture_grenzland", "label": "Grenzland", "gruppe": "Kultur", "icon": "🏞️" },
-
-    { "id": "preis_guenstig", "label": "Günstig 1 kupfer münze", "gruppe": "Preis", "icon": "💰" },
-    { "id": "preis_mittel", "label": "Mittel", "gruppe": "Preis", "icon": "💰💰" },
-    { "id": "preis_teuer", "label": "Teuer", "gruppe": "Preis", "icon": "💰💰💰" }
+    {
+      "id": "Küche_Menschen",
+      "label": "Die Küche der Menschen",
+      "gruppe": "Küche"
+    },
+    {
+      "id": "Küche_Elfen",
+      "label": "Die Küche der Elfen",
+      "gruppe": "Küche"
+    },
+    {
+      "id": "Küche_Zwerge",
+      "label": "Die Küche der Zwerge",
+      "gruppe": "Küche"
+    },
+    {
+      "id": "Küche_Halblinge",
+      "label": "Die Küche der Halblinge",
+      "gruppe": "Küche"
+    },
+    { "id": "Küche_Exotisch", "label": "Exotische Küche", "gruppe": "Küche" },
+    { "id": "Küche_Elixiere", "label": "Elixiere & Ales", "gruppe": "Küche" }
   ]
 }

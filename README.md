@@ -149,4 +149,60 @@ Dadurch bleibt das System: - Wartbar - Erweiterbar - Skalierbar -
 
 ------------------------------------------------------------------------
 
+------------------------------------------------------------------------
+
+## 📌 To do
+
+### 0. 🔎 Einfache Suche
+
+- [ ] Suche nach Rezeptname
+- [ ] Suche nach Teilwort (z.B. "Gurken")
+- [ ] Suche nach Zutaten
+- [ ] Suche nach Tags
+- [ ] Kombinierbar mit anderen Filtern
+
+--------------------------------------------------
+
+### 1. 👥 Eigenschaften
+
+- [x] Allergen (enthält)
+- [x] Ernährung
+- [x] Verwendung
+
+--------------------------------------------------
+
+### 2. 🧙 DnD-Filter (Lore & Setting)
+
+- [x] Preis
+- [x] Rasse
+- [x] Küche
+
+--------------------------------------------------
+
+### 3. 🧺 Zutaten-Filter (Was habe ich zuhause?)
+
+- [ ] Mehrere Zutaten auswählbar
+- [ ] Wen alergien Ausgeschaltet zutaten augegraut
+
+--------------------------------------------------
+
+## 4. 🌱 Saison-Filter (Was ist gerade sinnvoll?)
+
+- [x] Nach Monat filtern
+- [x] Nach Jahreszeit filtern
+
+--------------------------------------------------
+
+### 5. 🧪 Nährstoff-Filter (Mangel ausgleichen)
+
+- [ ] Nach Nährstoff filtern (Eisen, B12, Protein ...)
+- [ ] Rezepte nach Nährstoffmenge sortieren
+- [ ] Mindestwert definierbar
+- [ ] Kombination mehrerer Nährstoffe möglich
+- [ ] "Nährstoffreichste Rezepte" anzeigen
+
+--------------------------------------------------
+
+
+
 © REZEPT_VIEWER_PLUS
