@@ -1,35 +1,170 @@
 {
   "eigenschaften": [
     {
+      "id": "prop_alkoholfrei",
+      "label": "Alkoholfrei",
+      "gruppe": "Ernährung",
+      "icon": "🚫🍺"
+    },
+    {
+      "id": "prop_enthaelt_fisch",
+      "label": "Enthält Fisch",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Tierisch",
+      "icon": "🐟"
+    },
+    {
+      "id": "prop_enthaelt_krebstiere",
+      "label": "Enthält Krebstiere",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Tierisch",
+      "icon": "🦐"
+    },
+    {
+      "id": "prop_enthaelt_weichtiere",
+      "label": "Enthält Weichtiere",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Tierisch",
+      "icon": "🦪"
+    },
+    {
+      "id": "prop_enthaelt_erdnuesse",
+      "label": "Enthält Erdnüsse",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Nüsse & Hülsenfrüchte",
+      "icon": "🥜"
+    },
+    {
+      "id": "prop_enthaelt_schalenfruechte",
+      "label": "Enthält Schalenfrüchte (Nüsse)",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Nüsse & Hülsenfrüchte",
+      "icon": "🌰"
+    },
+    {
+      "id": "prop_enthaelt_soja",
+      "label": "Enthält Soja",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Nüsse & Hülsenfrüchte",
+      "icon": "🫘"
+    },
+    {
+      "id": "prop_enthaelt_lupinen",
+      "label": "Enthält Lupinen",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Nüsse & Hülsenfrüchte",
+      "icon": "🌼"
+    },
+    {
+      "id": "prop_enthaelt_sellerie",
+      "label": "Enthält Sellerie",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Gemüse & Gewürze",
+      "icon": "🥬"
+    },
+    {
+      "id": "prop_enthaelt_senf",
+      "label": "Enthält Senf",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Gemüse & Gewürze",
+      "icon": "🌭"
+    },
+    {
+      "id": "prop_enthaelt_sesam",
+      "label": "Enthält Sesam",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Samen & Körner",
+      "icon": "🫓"
+    },
+    {
+      "id": "prop_glutenfrei",
+      "label": "Glutenfrei",
+      "gruppe": "Allergen (enthält)",
+      "untergruppe": "Samen & Körner",
+      "icon": "🚫🌾"
+    },
+    {
       "id": "prop_enthaelt_gluten",
       "label": "Enthält Gluten",
       "gruppe": "Allergen (enthält)",
+      "untergruppe": "Getreide",
       "icon": "🌾"
     },
     {
       "id": "prop_enthaelt_laktose",
       "label": "Enthält Laktose",
       "gruppe": "Allergen (enthält)",
+      "untergruppe": "Milchprodukte",
       "icon": "🥛"
     },
     {
       "id": "prop_enthaelt_ei",
       "label": "Enthält Ei",
       "gruppe": "Allergen (enthält)",
+      "untergruppe": "Tierisch",
       "icon": "🥚"
     },
     {
-      "id": "prop_enthaelt_senf",
-      "label": "Enthält Senf",
+      "id": "prop_enthaelt_sulfite",
+      "label": "Enthält Sulfite / Schwefeldioxid",
       "gruppe": "Allergen (enthält)",
-      "icon": "🌭"
+      "untergruppe": "Zusatzstoffe",
+      "icon": "🧪"
     },
 
+    {
+      "id": "prop_trigger_mango",
+      "label": "Mango (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Früchte",
+      "icon": "🥭",
+      "prioritaet": 36
+    },
+    {
+      "id": "prop_trigger_honig",
+      "label": "Honig (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Zucker & Süssstoffe",
+      "icon": "🍯",
+      "prioritaet": 45
+    },
+    {
+      "id": "prop_trigger_raps",
+      "label": "Raps (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Öle & Fette",
+      "icon": "🌼",
+      "prioritaet": 90
+    },
+    {
+      "id": "prop_trigger_sonnenblumenkerne",
+      "label": "Sonnenblumenkerne (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Samen & Körner",
+      "icon": "🌻",
+      "prioritaet": 92
+    },
+    {
+      "id": "prop_trigger_kartoffel",
+      "label": "Kartoffel (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Gemüse",
+      "icon": "🥔",
+      "prioritaet": 55
+    },
+    {
+      "id": "prop_trigger_radiesli",
+      "label": "Radiesli (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Gemüse",
+      "icon": "🌶️",
+      "prioritaet": 56
+    },
     {
       "id": "prop_trigger_gurke",
       "label": "Gurke (sensibel)",
       "gruppe": "Unverträglichkeit / Trigger",
-      "untergruppe": "Spezialfälle",
+      "untergruppe": "Gemüse",
       "icon": "🥒",
       "prioritaet": 10
     },
@@ -37,9 +172,86 @@
       "id": "prop_trigger_pfefferoni",
       "label": "Peperoni (sensibel)",
       "gruppe": "Unverträglichkeit / Trigger",
-      "untergruppe": "Spezialfälle",
+      "untergruppe": "Scharf & Gewürze",
       "icon": "🌶️",
       "prioritaet": 20
+    },
+    {
+      "id": "prop_trigger_scharf",
+      "label": "Scharf (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Scharf & Gewürze",
+      "icon": "🌶️",
+      "prioritaet": 25
+    },
+    {
+      "id": "prop_trigger_zitrus",
+      "label": "Zitrus (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Früchte",
+      "icon": "🍋",
+      "prioritaet": 30
+    },
+    {
+      "id": "prop_trigger_fruktose",
+      "label": "Fruktose/Früchte (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Früchte",
+      "icon": "🍑",
+      "prioritaet": 35
+    },
+    {
+      "id": "prop_trigger_zucker_suess",
+      "label": "Sehr süss / Zucker (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Zucker & Süssstoffe",
+      "icon": "🍬",
+      "prioritaet": 40
+    },
+    {
+      "id": "prop_trigger_zwiebel",
+      "label": "Zwiebel (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Gemüse",
+      "icon": "🧅",
+      "prioritaet": 50
+    },
+    {
+      "id": "prop_trigger_kohlensaeure",
+      "label": "Kohlensäure (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Getränke",
+      "icon": "🫧",
+      "prioritaet": 60
+    },
+    {
+      "id": "prop_trigger_chinin",
+      "label": "Chinin / Tonic (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Getränke",
+      "icon": "🥤",
+      "prioritaet": 70
+    },
+    {
+      "id": "prop_trigger_sulfite_histamin",
+      "label": "Sulfite/Histamin (sensibel)",
+      "gruppe": "Unverträglichkeit / Trigger",
+      "untergruppe": "Zusatzstoffe",
+      "icon": "🧄",
+      "prioritaet": 80
+    },
+
+    {
+      "id": "prop_salat",
+      "label": "Salat",
+      "gruppe": "Speise",
+      "icon": "🥗"
+    },
+    {
+      "id": "prop_drinks",
+      "label": "Drinks",
+      "gruppe": "Speise",
+      "icon": "🍹"
     },
 
     {
@@ -78,19 +290,7 @@
       "label": "Unterwegs",
       "gruppe": "Verwendung",
       "icon": "🎒"
-    },
-
-    {
-      "id": "prop_salat",
-      "label": "Salat",
-      "gruppe": "Speise",
-      "icon": "🥗"
-    },
-    {
-      "id": "prop_drinks",
-      "label": "Drinks",
-      "gruppe": "Speise",
-      "icon": "🍹"
     }
+
   ]
 }

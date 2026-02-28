@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-    // Nährstoffe Dropdown (Checkboxen) + "relativ hohe Werte" (Ranking)
+  // Nährstoffe Dropdown (Checkboxen) + "relativ hohe Werte" (Ranking)
   initCheckboxDropdown({
     dropdownId: "nutrDropdown",
     toggleId: "nutrToggle",
@@ -363,14 +363,18 @@ async function initCheckboxDropdown(cfg) {
       // ✅ Im "deselect" Modus (Eigenschaften): nie alles abwählen lassen.
       // Standard = "kann enthalten" (Default-Checkboxen sind an).
       if (cfg.badgeMode === "deselect") {
-        const defaults = [...menu.querySelectorAll('input[type="checkbox"]')].filter(
-          (x) => x.dataset.default === "1",
-        );
+        const defaults = [
+          ...menu.querySelectorAll('input[type="checkbox"]'),
+        ].filter((x) => x.dataset.default === "1");
 
         const checkedDefaults = defaults.filter((x) => x.checked);
 
         // Wenn der User gerade die letzte Default-Option abwählen will -> blocken
-        if (!cb.checked && cb.dataset.default === "1" && checkedDefaults.length === 0) {
+        if (
+          !cb.checked &&
+          cb.dataset.default === "1" &&
+          checkedDefaults.length === 0
+        ) {
           cb.checked = true;
         }
       }
@@ -386,7 +390,9 @@ async function initCheckboxDropdown(cfg) {
     if (cfg.badgeMode === "deselect") {
       const all = [...menu.querySelectorAll('input[type="checkbox"]')];
       const defaults = all.filter((cb) => cb.dataset.default === "1");
-      const excluded = defaults.filter((cb) => !cb.checked).map((cb) => cb.value);
+      const excluded = defaults
+        .filter((cb) => !cb.checked)
+        .map((cb) => cb.value);
 
       if (excluded.length === 0) {
         badge.hidden = true;
@@ -405,7 +411,9 @@ async function initCheckboxDropdown(cfg) {
     }
 
     // Standard-Modus: angehakt = ausgewählt
-    const checked = [...menu.querySelectorAll('input[type="checkbox"]:checked')].map((cb) => cb.value);
+    const checked = [
+      ...menu.querySelectorAll('input[type="checkbox"]:checked'),
+    ].map((cb) => cb.value);
 
     if (checked.length === 0) {
       badge.hidden = true;
@@ -520,7 +528,9 @@ async function initZutatenDropdown(cfg) {
 
     controls.appendChild(makeStateBtn("🟦", "kann enthalten", "allow", z.id));
     controls.appendChild(makeStateBtn("⭐", "muss enthalten", "need", z.id));
-    controls.appendChild(makeStateBtn("🚫", "darf nicht enthalten", "nohave", z.id));
+    controls.appendChild(
+      makeStateBtn("🚫", "darf nicht enthalten", "nohave", z.id),
+    );
 
     li.appendChild(infoBtn);
     li.appendChild(nameSpan);
@@ -532,7 +542,9 @@ async function initZutatenDropdown(cfg) {
   // ✅ Standard: alles auf "kann enthalten"
   for (const z of items) {
     stateById.set(String(z.id), "allow");
-    const li = menu.querySelector(`li.dropdown-item--ingredient[data-ingredient-id="${CSS.escape(String(z.id))}"]`);
+    const li = menu.querySelector(
+      `li.dropdown-item--ingredient[data-ingredient-id="${CSS.escape(String(z.id))}"]`,
+    );
     if (li) {
       li.querySelectorAll(".ingredient-state-btn").forEach((b) => {
         const isActive = b.dataset.state === "allow";
@@ -672,7 +684,9 @@ async function initZutatenDropdown(cfg) {
     menu.querySelectorAll("li.dropdown-item--ingredient").forEach((li) => {
       const id = String(li.dataset.ingredientId || "");
       const z = zById.get(id);
-      const props = Array.isArray(z?.eigenschaften_ids) ? z.eigenschaften_ids : [];
+      const props = Array.isArray(z?.eigenschaften_ids)
+        ? z.eigenschaften_ids
+        : [];
 
       const hits = props.filter((p) => excludedProps.includes(String(p)));
       const disabled = hits.length > 0;
@@ -699,16 +713,26 @@ async function initZutatenDropdown(cfg) {
 
   function openIngredientInfo(z) {
     const imgPath = z?.bilder?.pfad ? String(z.bilder.pfad) : "";
-    const imgAlt = z?.bilder?.alt ? String(z.bilder.alt) : String(z.name || "Zutat");
+    const imgAlt = z?.bilder?.alt
+      ? String(z.bilder.alt)
+      : String(z.name || "Zutat");
 
     const lager = z?.lagerung?.ort ? String(z.lagerung.ort) : "";
-    const halt = Number.isFinite(z?.lagerung?.haltbarkeit_tage) ? `${z.lagerung.haltbarkeit_tage} Tage` : "";
+    const halt = Number.isFinite(z?.lagerung?.haltbarkeit_tage)
+      ? `${z.lagerung.haltbarkeit_tage} Tage`
+      : "";
     const tipps = Array.isArray(z?.lagerung?.tipps) ? z.lagerung.tipps : [];
 
-    const schlecht = Array.isArray(z?.schlecht_erkennen) ? z.schlecht_erkennen : [];
+    const schlecht = Array.isArray(z?.schlecht_erkennen)
+      ? z.schlecht_erkennen
+      : [];
 
-    const saisonMonate = Array.isArray(z?.saison?.schweiz_monate) ? z.saison.schweiz_monate : [];
-    const saisonLabel = Array.isArray(z?.saison?.alternativ_labels) ? z.saison.alternativ_labels.join(", ") : "";
+    const saisonMonate = Array.isArray(z?.saison?.schweiz_monate)
+      ? z.saison.schweiz_monate
+      : [];
+    const saisonLabel = Array.isArray(z?.saison?.alternativ_labels)
+      ? z.saison.alternativ_labels.join(", ")
+      : "";
 
     const kcal = z?.naehrwerte_pro_100g?.kcal ?? "";
     const protein = z?.naehrwerte_pro_100g?.protein_g ?? "";
@@ -728,8 +752,12 @@ async function initZutatenDropdown(cfg) {
           <div style="font-weight:600; margin-top:10px;">Saison (CH)</div>
           <div>${saisonLabel || (saisonMonate.length ? `Monate: ${saisonMonate.join(", ")}` : "Ganzjährig")}</div>
 
-          ${schlecht.length ? `<div style="font-weight:600; margin-top:10px;">Schlecht erkennen</div>
-          <ul style="margin:6px 0 0 18px;">${schlecht.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul>` : ""}
+          ${
+            schlecht.length
+              ? `<div style="font-weight:600; margin-top:10px;">Schlecht erkennen</div>
+          <ul style="margin:6px 0 0 18px;">${schlecht.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul>`
+              : ""
+          }
 
           <div style="font-weight:600; margin-top:10px;">Nährwerte / 100g</div>
           <div>Kcal: ${escapeHtml(kcal)} • Protein: ${escapeHtml(protein)}g • Fett: ${escapeHtml(fett)}g • KH: ${escapeHtml(kh)}g</div>
@@ -823,7 +851,9 @@ async function loadNaehrstoffeOnce() {
   const res = await fetch("./daten/naehrstoffe.json");
   if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
   const data = await res.json();
-  __CACHE_NAEHRSTOFFE = Array.isArray(data?.naehrstoffe) ? data.naehrstoffe : [];
+  __CACHE_NAEHRSTOFFE = Array.isArray(data?.naehrstoffe)
+    ? data.naehrstoffe
+    : [];
   return __CACHE_NAEHRSTOFFE;
 }
 
@@ -847,7 +877,9 @@ function getByPath(obj, path) {
 
 async function updateNaehrstoffRanking(selectedNutrIds) {
   window.REZEPTE_FILTER = window.REZEPTE_FILTER || {};
-  window.REZEPTE_FILTER.naehrstoffe_selected = (selectedNutrIds || []).map(String);
+  window.REZEPTE_FILTER.naehrstoffe_selected = (selectedNutrIds || []).map(
+    String,
+  );
 
   const ids = window.REZEPTE_FILTER.naehrstoffe_selected;
 
@@ -856,7 +888,10 @@ async function updateNaehrstoffRanking(selectedNutrIds) {
     return;
   }
 
-  const [rezepte, naehrstoffe] = await Promise.all([loadRezepteOnce(), loadNaehrstoffeOnce()]);
+  const [rezepte, naehrstoffe] = await Promise.all([
+    loadRezepteOnce(),
+    loadNaehrstoffeOnce(),
+  ]);
 
   const nutrMap = new Map(naehrstoffe.map((n) => [String(n.id), n]));
   const selected = ids.map((id) => nutrMap.get(id)).filter(Boolean);
@@ -898,7 +933,9 @@ async function updateNaehrstoffRanking(selectedNutrIds) {
   console.log("Nährstoff-Ranking (relativ hoch, pro Portion):");
   console.log(
     "Auswahl:",
-    selected.map((n) => `${n.icon || ""} ${n.label} (${n.einheit || ""})`).join(" | "),
+    selected
+      .map((n) => `${n.icon || ""} ${n.label} (${n.einheit || ""})`)
+      .join(" | "),
   );
 
   console.log(
@@ -912,7 +949,7 @@ async function updateNaehrstoffRanking(selectedNutrIds) {
 }
 
 // ============================================================
-// REZEPTLISTE (Einfache Darstellung)
+// REZEPTLISTE (Strukturierte Darstellung)
 // ============================================================
 
 let __CACHE_REZEPTE_LISTE = null;
@@ -940,42 +977,124 @@ async function renderRezepteListe() {
   const eigenschaften = await loadJson("./daten/eigenschaften.json", "eigenschaften");
   const lore = await loadJson("./daten/lore.json", "lore");
 
-  const eigMap = new Map(eigenschaften.map(e => [e.id, e.label]));
-  const loreMap = new Map(lore.map(l => [l.id, l.label]));
+  const eigById = new Map(eigenschaften.map((e) => [String(e.id), e]));
+  const loreById = new Map(lore.map((l) => [String(l.id), l]));
 
   container.innerHTML = "";
 
-  rezepte.forEach(r => {
-    const div = document.createElement("div");
-    div.className = "rezept-card";
+  const erlaubteGruppen = ["Ernährung", "Allergen (enthält)", "Speise", "Verwendung"];
 
-    const eigTags = (r.eigenschaften_ids || [])
-      .map(id => eigMap.get(id) || id)
+  rezepte.forEach((r) => {
+    const titel = String(r?.titel || r?.meta?.title || "");
+    const bildPfad = String(r?.bild?.pfad || r?.bild || "");
+    const bildAlt = String(r?.bild?.alt || titel);
+
+    const eigIds = normalizeArray(r?.tags?.eigenschaften ?? r?.eigenschaften_ids);
+    const loreIds = normalizeArray(r?.tags?.lore ?? r?.lore_ids);
+
+    // Eigenschaften nach Gruppe sammeln
+    const gruppiert = {};
+    erlaubteGruppen.forEach((g) => (gruppiert[g] = []));
+
+    eigIds.forEach((id) => {
+      const obj = eigById.get(String(id));
+      if (!obj) return;
+
+      const gruppe = String(obj.gruppe || "");
+      if (erlaubteGruppen.includes(gruppe)) {
+        gruppiert[gruppe].push(obj);
+      }
+    });
+
+    // Gruppen sortieren (prio -> label)
+    erlaubteGruppen.forEach((g) => {
+      gruppiert[g].sort((a, b) => {
+        const pa = Number(a.prioritaet ?? 9999);
+        const pb = Number(b.prioritaet ?? 9999);
+        if (pa !== pb) return pa - pb;
+        return String(a.label || "").localeCompare(String(b.label || ""), "de");
+      });
+    });
+
+    const eigenschaftenHTML = erlaubteGruppen
+      .map((gruppe) => {
+        const liste = gruppiert[gruppe];
+        if (!liste.length) return "";
+
+        const chips = liste
+          .map((e) => {
+            const icon = e.icon ? `${escapeHtml(e.icon)} ` : "";
+            const label = escapeHtml(e.label || "");
+            return `<span class="tag-chip">${icon}${label}</span>`;
+          })
+          .join("");
+
+        return `
+          <div class="prop-group">
+            <div class="prop-group-title">${escapeHtml(gruppe)}</div>
+            <div class="prop-items">${chips}</div>
+          </div>
+        `;
+      })
+      .join("");
+
+    const loreText = loreIds
+      .map((id) => loreById.get(String(id))?.label || String(id))
+      .filter(Boolean)
       .join(", ");
 
-    const loreTags = (r.lore_ids || [])
-      .map(id => loreMap.get(id) || id)
-      .join(", ");
+    // ✅ Karte ist direkt ein Link (kein div + a verschachtelt)
+    const a = document.createElement("a");
+    a.className = "rezept-card";
 
-    div.innerHTML = `
-      <div class="rezept-header">
-        <div class="rezept-title">${r.titel}</div>
-        <img src="${r.bild}" class="rezept-bild" />
+    // ID robust holen
+    const rezeptId = String(r?.id || r?.meta?.id || "");
+    a.href = rezeptId ? `./rezept.html?id=${encodeURIComponent(rezeptId)}` : "./rezept.html";
+
+    a.innerHTML = `
+      <div class="rezept-meta">
+        <h2 class="rezept-title">${escapeHtml(titel)}</h2>
+
+        <div class="rezept-eigenschaften">
+          ${eigenschaftenHTML}
+        </div>
+
+        ${loreText ? `<div class="rezept-lore">${escapeHtml(loreText)}</div>` : ""}
       </div>
 
-      <div class="rezept-tags">
-        <div class="tags-eig">${eigTags}</div>
-        <div class="tags-lore">${loreTags}</div>
+      <div class="rezept-media">
+        ${
+          bildPfad
+            ? `<img src="${escapeHtml(bildPfad)}" alt="${escapeHtml(bildAlt)}" class="rezept-bild" />`
+            : ""
+        }
       </div>
     `;
 
-    container.appendChild(div);
+    container.appendChild(a);
   });
+}
+
+function normalizeArray(v) {
+  if (!v) return [];
+  if (Array.isArray(v)) return v.map(String);
+  if (typeof v === "string") return v.split(",").map((s) => s.trim()).filter(Boolean);
+  return [];
 }
 
 async function loadJson(url, key) {
   const res = await fetch(url);
   if (!res.ok) return [];
   const data = await res.json();
-  return Array.isArray(data[key]) ? data[key] : [];
+  return Array.isArray(data?.[key]) ? data[key] : [];
 }
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+

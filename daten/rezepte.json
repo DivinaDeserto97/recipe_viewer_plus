@@ -5,7 +5,7 @@
       "sprache": "de-CH",
       "titel": "Satter Gurkensalat mit Kartoffeln, Ei & Radiesli (Balsamico-Senf)",
       "bild": {
-        "pfad": "bilder/rezepte/gurkensalat.png",
+        "pfad": "img/rezepte/gurkensalat.png",
         "alt": "Gurkensalat mit Kartoffeln und Ei"
       },
       "basis_portionen": 2,
@@ -314,8 +314,8 @@
           "kat_drink"
         ],
         "lore": [
-          "race_zwerge",
-          "culture_taverne"
+          "race_Zwerg",
+          "Küche_Elixiere"
         ]
       },
       "allergene": {
@@ -513,7 +513,7 @@
           "kat_drink"
         ],
         "lore": [
-          "culture_taverne"
+          "Küche_Elixiere"
         ]
       },
       "allergene": {

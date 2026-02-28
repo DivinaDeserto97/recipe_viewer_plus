@@ -348,3 +348,123 @@ body.dark .dropdown-item:hover {
 .dropdown-item--ingredient:has(.ingredient-state-btn[data-active="1"][data-state="nohave"]) {
   background: rgba(220, 0, 0, 0.06);
 }
+
+/* ============================================================
+   REZEPT CARD – kompakter & sauber ausgerichtet
+============================================================ */
+
+.rezept-card {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  align-items: start; /* <-- wichtig! */
+
+  gap: 14px;
+
+  background: var(--bg, #fff);
+  border: 1px solid var(--border-color, rgba(0,0,0,0.12));
+  border-radius: 14px;
+  padding: 14px 16px;
+
+  text-decoration: none;
+  color: inherit;
+}
+
+.rezept-card:hover {
+  border-color: var(--accent, #777);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+
+/* ============================================================
+   LINKER TEXTBEREICH
+============================================================ */
+
+.rezept-meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;          /* kleiner Abstand */
+}
+
+.rezept-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.05; /* kompakter */
+  margin: 0;
+}
+
+
+/* ============================================================
+   EIGENSCHAFTEN – Stöberhilfe kompakt
+============================================================ */
+
+.rezept-eigenschaften {
+  font-size: 0.82rem;
+  opacity: 0.8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;      /* weniger Luft */
+  margin-top: 2px;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;  /* kleiner */
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: rgba(0,0,0,0.06);
+}
+
+
+/* ============================================================
+   LORE
+============================================================ */
+
+.rezept-lore {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  font-style: italic;
+  margin-top: 2px;
+}
+
+
+/* ============================================================
+   BILD RECHTS
+============================================================ */
+
+.rezept-media {
+  width: 160px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start; /* oben ausgerichtet */
+}
+
+.rezept-bild {
+  width: 160px;
+  height: 110px;     /* minimal kleiner */
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 680px) {
+  .rezept-card {
+    grid-template-columns: 1fr;
+  }
+
+  .rezept-media {
+    width: 100%;
+  }
+
+  .rezept-bild {
+    width: 100%;
+    height: 180px;
+  }
+}
