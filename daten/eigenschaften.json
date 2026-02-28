@@ -78,6 +78,19 @@
       "label": "Unterwegs",
       "gruppe": "Verwendung",
       "icon": "🎒"
+    },
+
+    {
+      "id": "prop_salat",
+      "label": "Salat",
+      "gruppe": "Speise",
+      "icon": "🥗"
+    },
+    {
+      "id": "prop_drinks",
+      "label": "Drinks",
+      "gruppe": "Speise",
+      "icon": "🍹"
     }
   ]
 }

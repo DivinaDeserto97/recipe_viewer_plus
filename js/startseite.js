@@ -910,3 +910,72 @@ async function updateNaehrstoffRanking(selectedNutrIds) {
     })),
   );
 }
+
+// ============================================================
+// REZEPTLISTE (Einfache Darstellung)
+// ============================================================
+
+let __CACHE_REZEPTE_LISTE = null;
+
+async function loadRezepteListeOnce() {
+  if (__CACHE_REZEPTE_LISTE) return __CACHE_REZEPTE_LISTE;
+
+  const res = await fetch("./daten/rezepte.json");
+  if (!res.ok) throw new Error("Rezepte konnten nicht geladen werden");
+
+  const data = await res.json();
+  __CACHE_REZEPTE_LISTE = Array.isArray(data.rezepte) ? data.rezepte : [];
+  return __CACHE_REZEPTE_LISTE;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderRezepteListe();
+});
+
+async function renderRezepteListe() {
+  const container = document.getElementById("rezepteListe");
+  if (!container) return;
+
+  const rezepte = await loadRezepteListeOnce();
+  const eigenschaften = await loadJson("./daten/eigenschaften.json", "eigenschaften");
+  const lore = await loadJson("./daten/lore.json", "lore");
+
+  const eigMap = new Map(eigenschaften.map(e => [e.id, e.label]));
+  const loreMap = new Map(lore.map(l => [l.id, l.label]));
+
+  container.innerHTML = "";
+
+  rezepte.forEach(r => {
+    const div = document.createElement("div");
+    div.className = "rezept-card";
+
+    const eigTags = (r.eigenschaften_ids || [])
+      .map(id => eigMap.get(id) || id)
+      .join(", ");
+
+    const loreTags = (r.lore_ids || [])
+      .map(id => loreMap.get(id) || id)
+      .join(", ");
+
+    div.innerHTML = `
+      <div class="rezept-header">
+        <div class="rezept-title">${r.titel}</div>
+        <img src="${r.bild}" class="rezept-bild" />
+      </div>
+
+      <div class="rezept-tags">
+        <div class="tags-eig">${eigTags}</div>
+        <div class="tags-lore">${loreTags}</div>
+      </div>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+async function loadJson(url, key) {
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return Array.isArray(data[key]) ? data[key] : [];
+}

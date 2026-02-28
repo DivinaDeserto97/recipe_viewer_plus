@@ -3,23 +3,18 @@
     {
       "id": "recipe-gurkensalat-kartoffel-ei-balsamico-001",
       "sprache": "de-CH",
-
       "titel": "Satter Gurkensalat mit Kartoffeln, Ei & Radiesli (Balsamico-Senf)",
       "bild": {
         "pfad": "bilder/rezepte/gurkensalat.png",
         "alt": "Gurkensalat mit Kartoffeln und Ei"
       },
-
       "basis_portionen": 2,
-
       "zeit": {
         "gesamt_min": 35,
         "aktiv_min": 15,
         "ruhe_min": 20
       },
-
       "schwierigkeit": "leicht",
-
       "ausruestung": [
         "Schüssel",
         "Sieb",
@@ -30,19 +25,28 @@
         "Topf für Kartoffeln",
         "Topf für Eier"
       ],
-
       "tags": {
-        "eigenschaften": ["prop_vegetarisch", "prop_glutenfrei", "prop_mealprep", "prop_picknick"],
-        "kategorien": ["kat_sommer", "kat_salat", "kat_sattmacher"],
-        "lore": ["race_halblinge", "race_zwerge", "race_menschen", "culture_grenzland", "preis_guenstig"]
+        "eigenschaften": [
+          "prop_vegetarisch",
+          "prop_glutenfrei",
+          "prop_mealprep",
+          "prop_picknick",
+          "prop_salat"
+        ],
+        "lore": [
+          "race_Halbling",
+          "race_Zwerg",
+          "race_Mensch"
+        ]
       },
-
       "allergene": {
-        "enthaelt": ["alg_ei", "alg_senf"],
+        "enthaelt": [
+          "alg_ei",
+          "alg_senf"
+        ],
         "kann_enthalten": [],
         "hinweise": "Wenn du Honig ersetzen willst: Zucker oder Ahornsirup geht."
       },
-
       "inhalt": {
         "geschichte": {
           "setting": "Grenzland zwischen Menschenhügeln und Zwergenstollen",
@@ -52,44 +56,103 @@
             "Pfeffer erst zum Schluss – das gilt als Wächter-Regel."
           ]
         },
-
         "zutatenlisten": [
           {
             "typ": "basis",
             "name": "Basis",
             "position": 1,
             "posten": [
-              { "zutat_id": "salatgurke", "menge": 1, "einheit": "stk", "zubereitung": "in feine Scheiben" },
-              { "zutat_id": "radiesli", "menge": 6, "einheit": "stk", "zubereitung": "in feine Scheiben" },
-              { "zutat_id": "weisse_zwiebel", "menge": 1, "einheit": "stk", "zubereitung": "sehr fein gehackt; kurz gewässert" },
-              { "zutat_id": "kartoffel_festkochend", "menge": 300, "einheit": "g", "zubereitung": "gekocht, abgekühlt, in Scheiben" },
-              { "zutat_id": "ei", "menge": 3, "einheit": "stk", "zubereitung": "hart gekocht" }
+              {
+                "zutat_id": "salatgurke",
+                "menge": 0.5,
+                "einheit": "stk",
+                "zubereitung": "in feine Scheiben"
+              },
+              {
+                "zutat_id": "radiesli",
+                "menge": 3.0,
+                "einheit": "stk",
+                "zubereitung": "in feine Scheiben"
+              },
+              {
+                "zutat_id": "weisse_zwiebel",
+                "menge": 0.5,
+                "einheit": "stk",
+                "zubereitung": "sehr fein gehackt; kurz gewässert"
+              },
+              {
+                "zutat_id": "kartoffel_festkochend",
+                "menge": 150.0,
+                "einheit": "g",
+                "zubereitung": "gekocht, abgekühlt, in Scheiben"
+              },
+              {
+                "zutat_id": "ei",
+                "menge": 1.5,
+                "einheit": "stk",
+                "zubereitung": "hart gekocht"
+              }
             ]
           },
           {
             "typ": "mix",
             "name": "Gurke entwässern (Mix)",
-            "position": 1,
+            "position": 2,
             "posten": [
-              { "zutat_id": "salz", "menge": 1, "einheit": "tl", "hinweis": "nur zum Wasserziehen" },
-              { "zutat_id": "zucker", "menge": 1, "einheit": "tl", "hinweis": "optional, unterstützt Osmose" }
+              {
+                "zutat_id": "salz",
+                "menge": 0.5,
+                "einheit": "tl",
+                "hinweis": "nur zum Wasserziehen"
+              },
+              {
+                "zutat_id": "zucker",
+                "menge": 0.5,
+                "einheit": "tl",
+                "hinweis": "optional, unterstützt Osmose"
+              }
             ]
           },
           {
             "typ": "dressing",
             "name": "Dressing",
-            "position": 1,
+            "position": 3,
             "posten": [
-              { "zutat_id": "aceto_balsamico", "menge": 4, "einheit": "el" },
-              { "zutat_id": "rapsoel", "menge": 6, "einheit": "el", "hinweis": "leichter: 4 EL" },
-              { "zutat_id": "honig", "menge": 2, "einheit": "tl" },
-              { "zutat_id": "senf", "menge": 1, "einheit": "tl" },
-              { "zutat_id": "zitronensaft", "menge": 0.5, "einheit": "tl" },
-              { "zutat_id": "pfeffer", "menge": 1, "einheit": "prise", "hinweis": "am Schluss" }
+              {
+                "zutat_id": "aceto_balsamico",
+                "menge": 2.0,
+                "einheit": "el"
+              },
+              {
+                "zutat_id": "rapsoel",
+                "menge": 3.0,
+                "einheit": "el",
+                "hinweis": "leichter: 4 EL"
+              },
+              {
+                "zutat_id": "honig",
+                "menge": 1.0,
+                "einheit": "tl"
+              },
+              {
+                "zutat_id": "senf",
+                "menge": 0.5,
+                "einheit": "tl"
+              },
+              {
+                "zutat_id": "zitronensaft",
+                "menge": 0.25,
+                "einheit": "tl"
+              },
+              {
+                "zutat_id": "pfeffer",
+                "menge": 0.5,
+                "einheit": "prise",
+                "hinweis": "am Schluss"
+              }
             ]
           }
         ],
-
         "schritte": [
           {
             "typ": "basis",
@@ -129,14 +192,19 @@
           }
         ]
       },
-
       "varianten": [
         {
           "id": "var_zwerg",
           "name": "Zwergen-Variante: Herzhaft & robust",
           "aenderungen": {
             "zutaten_delta": [
-              { "zutat_id": "sonnenblumenkerne", "menge": 1, "einheit": "el", "aktion": "hinzufuegen", "optional": true }
+              {
+                "zutat_id": "sonnenblumenkerne",
+                "menge": 0.5,
+                "einheit": "el",
+                "aktion": "hinzufuegen",
+                "optional": true
+              }
             ],
             "schritte_hinweise": [
               "Mehr Pfeffer, evtl. Paprika."
@@ -144,7 +212,6 @@
           }
         }
       ],
-
       "lagerung": {
         "haltbarkeit_kuehlschrank_tage": 2,
         "beste_qualitaet_tage": 1,
@@ -158,19 +225,454 @@
           "Verfärbungen, Schimmel"
         ]
       },
-
       "naehrwerte": {
         "hinweis": "Näherungswerte",
-        "gesamt": { "kcal": 1130, "protein_g": 28, "fett_g": 88, "kh_g": 62, "ballaststoffe_g": 10, "zucker_g": 20, "salz_g": 3.5 },
-        "pro_portion": { "portionen": 2, "kcal": 565, "protein_g": 14, "fett_g": 44, "kh_g": 31, "ballaststoffe_g": 5, "zucker_g": 10, "salz_g": 1.8 }
+        "gesamt": {
+          "kcal": 1130,
+          "protein_g": 28,
+          "fett_g": 88,
+          "kh_g": 62,
+          "ballaststoffe_g": 10,
+          "zucker_g": 20,
+          "salz_g": 3.5
+        },
+        "pro_portion": {
+          "portionen": 2,
+          "kcal": 565,
+          "protein_g": 14,
+          "fett_g": 44,
+          "kh_g": 31,
+          "ballaststoffe_g": 5,
+          "zucker_g": 10,
+          "salz_g": 1.8
+        }
       },
-
       "einkaufsliste": {
         "gruppen": [
-          { "gruppe": "Frisch", "posten": ["salatgurke", "radiesli", "weisse_zwiebel", "zitrone"] },
-          { "gruppe": "Vorrat", "posten": ["aceto_balsamico", "rapsoel", "honig", "senf", "salz", "pfeffer", "zucker"] },
-          { "gruppe": "Protein", "posten": ["ei"] },
-          { "gruppe": "Sattmacher", "posten": ["kartoffel_festkochend"] }
+          {
+            "gruppe": "Frisch",
+            "posten": [
+              "salatgurke",
+              "radiesli",
+              "weisse_zwiebel",
+              "zitrone"
+            ]
+          },
+          {
+            "gruppe": "Vorrat",
+            "posten": [
+              "aceto_balsamico",
+              "rapsoel",
+              "honig",
+              "senf",
+              "salz",
+              "pfeffer",
+              "zucker"
+            ]
+          },
+          {
+            "gruppe": "Protein",
+            "posten": [
+              "ei"
+            ]
+          },
+          {
+            "gruppe": "Sattmacher",
+            "posten": [
+              "kartoffel_festkochend"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "recipe-fluessiges-gold-001",
+      "sprache": "de-CH",
+      "titel": "Flüssiges Gold",
+      "bild": {
+        "pfad": "bilder/rezepte/PLACEHOLDER.png",
+        "alt": "Flüssiges Gold (alkoholfreier Mango-Drink)"
+      },
+      "basis_portionen": 1,
+      "zeit": {
+        "gesamt_min": 5,
+        "aktiv_min": 5,
+        "ruhe_min": 0
+      },
+      "schwierigkeit": "leicht",
+      "ausruestung": [
+        "Shaker (optional)",
+        "Sieb (optional)",
+        "Glas (ca. 380 ml)",
+        "Löffel"
+      ],
+      "tags": {
+        "eigenschaften": [
+          "prop_alkoholfrei"
+        ],
+        "kategorien": [
+          "kat_drink"
+        ],
+        "lore": [
+          "race_zwerge",
+          "culture_taverne"
+        ]
+      },
+      "allergene": {
+        "enthaelt": [],
+        "kann_enthalten": [],
+        "hinweise": ""
+      },
+      "inhalt": {
+        "geschichte": {
+          "setting": "Taverne in einer Fantasy-Welt",
+          "kurzgeschichte": "Das Flüssige Gold ist eines der wenigen alkoholfreien Getränke, das selbst unter Zwergen hohes Ansehen genießt. Es schimmert wie geschmolzenes Erz und erfrischt wie Quellwasser aus den tiefsten Minen.",
+          "ritual": []
+        },
+        "zutatenlisten": [
+          {
+            "typ": "basis",
+            "name": "Drink",
+            "position": 1,
+            "posten": [
+              {
+                "zutat_id": "mango_sirup",
+                "menge": 40.0,
+                "einheit": "ml"
+              },
+              {
+                "zutat_id": "zitronensaft",
+                "menge": 20.0,
+                "einheit": "ml"
+              },
+              {
+                "zutat_id": "orangensaft_oder_maracuja",
+                "menge": 100.0,
+                "einheit": "ml"
+              },
+              {
+                "zutat_id": "mineralwasser_mit_kohlensaeure",
+                "menge": 220.0,
+                "einheit": "ml",
+                "zubereitung": "kalt"
+              },
+              {
+                "zutat_id": "eiswuerfel",
+                "menge": null,
+                "einheit": "",
+                "hinweis": "nach Geschmack"
+              }
+            ]
+          },
+          {
+            "typ": "optional",
+            "name": "Garnitur (optional)",
+            "position": 2,
+            "posten": [
+              {
+                "zutat_id": "orangenscheibe",
+                "menge": null,
+                "einheit": "",
+                "zubereitung": "Garnitur"
+              },
+              {
+                "zutat_id": "mango_eiswuerfel",
+                "menge": null,
+                "einheit": "",
+                "zubereitung": "Garnitur"
+              }
+            ]
+          }
+        ],
+        "schritte": [
+          {
+            "typ": "basis",
+            "name": "Zubereitung",
+            "schritte": [
+              {
+                "nr": 1,
+                "titel": "Shaken (optional, für extra kalt)",
+                "zeit_min": 1,
+                "text": [
+                  "Shaker mit Eis füllen.",
+                  "Mango-Sirup, Zitronensaft und Fruchtsaft hineingeben.",
+                  "10 Sekunden kräftig shaken."
+                ],
+                "kontrolle": [
+                  "Sehr kalt.",
+                  "Gut gemischt."
+                ]
+              },
+              {
+                "nr": 2,
+                "titel": "Abseihen und auffüllen",
+                "zeit_min": 2,
+                "text": [
+                  "In ein 380-ml-Glas mit frischen Eiswürfeln abseihen (oder direkt einfüllen ohne Shaker).",
+                  "Langsam mit Mineralwasser auf ca. 380 ml auffüllen.",
+                  "Sanft umrühren und servieren."
+                ],
+                "kontrolle": [
+                  "Sprudel bleibt vorhanden.",
+                  "Nicht zu stark umrühren."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "varianten": [],
+      "lagerung": {
+        "haltbarkeit_kuehlschrank_tage": 0,
+        "beste_qualitaet_tage": 0,
+        "lager_tipps": [
+          "Immer frisch mischen – Sprudel hält sonst nicht."
+        ],
+        "schlecht_erkennen": []
+      },
+      "naehrwerte": {
+        "hinweis": "Unbekannt – nicht im Chat enthalten.",
+        "gesamt": {
+          "kcal": null,
+          "protein_g": null,
+          "fett_g": null,
+          "kh_g": null,
+          "ballaststoffe_g": null,
+          "zucker_g": null,
+          "salz_g": null
+        },
+        "pro_portion": {
+          "portionen": 1,
+          "kcal": null,
+          "protein_g": null,
+          "fett_g": null,
+          "kh_g": null,
+          "ballaststoffe_g": null,
+          "zucker_g": null,
+          "salz_g": null
+        }
+      },
+      "einkaufsliste": {
+        "gruppen": [
+          {
+            "gruppe": "Getränke",
+            "posten": [
+              "mineralwasser_mit_kohlensaeure",
+              "orangensaft_oder_maracuja"
+            ]
+          },
+          {
+            "gruppe": "Sirup & Süsse",
+            "posten": [
+              "mango_sirup"
+            ]
+          },
+          {
+            "gruppe": "Frisch",
+            "posten": [
+              "zitrone"
+            ]
+          },
+          {
+            "gruppe": "Optional",
+            "posten": [
+              "orangenscheibe",
+              "mango_eiswuerfel",
+              "eiswuerfel"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "recipe-fluessiges-gluehwuermchenlicht-002",
+      "sprache": "de-CH",
+      "titel": "Flüssiges Glühwürmchenlicht",
+      "bild": {
+        "pfad": "bilder/rezepte/PLACEHOLDER.png",
+        "alt": "Flüssiges Glühwürmchenlicht (Mango-Tonic-Drink)"
+      },
+      "basis_portionen": 1,
+      "zeit": {
+        "gesamt_min": 5,
+        "aktiv_min": 5,
+        "ruhe_min": 0
+      },
+      "schwierigkeit": "leicht",
+      "ausruestung": [
+        "Shaker (optional)",
+        "Sieb (optional)",
+        "Glas (ca. 380 ml)",
+        "Löffel"
+      ],
+      "tags": {
+        "eigenschaften": [
+          "prop_alkoholfrei"
+        ],
+        "kategorien": [
+          "kat_drink"
+        ],
+        "lore": [
+          "culture_taverne"
+        ]
+      },
+      "allergene": {
+        "enthaelt": [],
+        "kann_enthalten": [],
+        "hinweise": "Leuchtet nur mit Schwarzlicht, wenn dein Tonic (Chinin) das unterstützt."
+      },
+      "inhalt": {
+        "geschichte": {
+          "setting": "Taverne in einer Fantasy-Welt",
+          "kurzgeschichte": "Das Flüssige Glühwürmchenlicht ist ein alchemistischer Trank, der im Dunkeln schimmert. Süß mit leicht bitterem Nachklang – ein Getränk für nächtliche Wachen und mutige Abenteurer.",
+          "ritual": []
+        },
+        "zutatenlisten": [
+          {
+            "typ": "basis",
+            "name": "Drink",
+            "position": 1,
+            "posten": [
+              {
+                "zutat_id": "mango_sirup",
+                "menge": 40.0,
+                "einheit": "ml"
+              },
+              {
+                "zutat_id": "zitronensaft",
+                "menge": 20.0,
+                "einheit": "ml"
+              },
+              {
+                "zutat_id": "orangensaft_oder_maracuja",
+                "menge": 100.0,
+                "einheit": "ml"
+              },
+              {
+                "zutat_id": "tonic_water",
+                "menge": 220.0,
+                "einheit": "ml",
+                "zubereitung": "kalt",
+                "hinweis": "kann unter Schwarzlicht schimmern"
+              },
+              {
+                "zutat_id": "eiswuerfel",
+                "menge": null,
+                "einheit": "",
+                "hinweis": "nach Geschmack"
+              }
+            ]
+          },
+          {
+            "typ": "optional",
+            "name": "Garnitur (optional)",
+            "position": 2,
+            "posten": [
+              {
+                "zutat_id": "orangenzeste",
+                "menge": null,
+                "einheit": "",
+                "zubereitung": "Garnitur"
+              }
+            ]
+          }
+        ],
+        "schritte": [
+          {
+            "typ": "basis",
+            "name": "Zubereitung",
+            "schritte": [
+              {
+                "nr": 1,
+                "titel": "Shaken (optional, für extra kalt)",
+                "zeit_min": 1,
+                "text": [
+                  "Shaker mit Eis füllen.",
+                  "Mango-Sirup, Zitronensaft und Fruchtsaft hineingeben.",
+                  "10 Sekunden kräftig shaken."
+                ],
+                "kontrolle": [
+                  "Sehr kalt.",
+                  "Gut gemischt."
+                ]
+              },
+              {
+                "nr": 2,
+                "titel": "Abseihen und auffüllen",
+                "zeit_min": 2,
+                "text": [
+                  "In ein 380-ml-Glas mit frischen Eiswürfeln abseihen (oder direkt einfüllen ohne Shaker).",
+                  "Langsam mit Tonic Water auf ca. 380 ml auffüllen.",
+                  "Sanft umrühren und servieren."
+                ],
+                "kontrolle": [
+                  "Sprudel bleibt vorhanden.",
+                  "Nicht zu stark umrühren."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "varianten": [],
+      "lagerung": {
+        "haltbarkeit_kuehlschrank_tage": 0,
+        "beste_qualitaet_tage": 0,
+        "lager_tipps": [
+          "Immer frisch mischen – Sprudel hält sonst nicht."
+        ],
+        "schlecht_erkennen": []
+      },
+      "naehrwerte": {
+        "hinweis": "Unbekannt – nicht im Chat enthalten.",
+        "gesamt": {
+          "kcal": null,
+          "protein_g": null,
+          "fett_g": null,
+          "kh_g": null,
+          "ballaststoffe_g": null,
+          "zucker_g": null,
+          "salz_g": null
+        },
+        "pro_portion": {
+          "portionen": 1,
+          "kcal": null,
+          "protein_g": null,
+          "fett_g": null,
+          "kh_g": null,
+          "ballaststoffe_g": null,
+          "zucker_g": null,
+          "salz_g": null
+        }
+      },
+      "einkaufsliste": {
+        "gruppen": [
+          {
+            "gruppe": "Getränke",
+            "posten": [
+              "tonic_water",
+              "orangensaft_oder_maracuja"
+            ]
+          },
+          {
+            "gruppe": "Sirup & Süsse",
+            "posten": [
+              "mango_sirup"
+            ]
+          },
+          {
+            "gruppe": "Frisch",
+            "posten": [
+              "zitrone"
+            ]
+          },
+          {
+            "gruppe": "Optional",
+            "posten": [
+              "orangenzeste",
+              "eiswuerfel"
+            ]
+          }
         ]
       }
     }
