@@ -4,32 +4,101 @@
  * ============================================================
  * startseite.js
  * ============================================================
- * - Theme umschalten (Hell/Dunkel)
- * - Saison/Monat-Select aus daten/saison.json füllen
- * - Eigenschaften-Dropdown (Checkboxen) aus daten/eigenschaften.json füllen
- * - Lore-Dropdown (Checkboxen) aus daten/lore.json füllen
- * - Zutaten-Dropdown (3 Zustände + Info + Sperren durch Eigenschaften)
+ * - Theme Toggle
+ * - Filter UI (Saison, Eigenschaften, Lore, Nährstoffe, Zutaten)
+ * - Rezeptliste rendert UND filtert #rezepteListe
  *
- * WICHTIG (HTML IDs):
- * - Saison Select:      #seasonSelect
- * - Theme Toggle:       #themeToggle
- *
- * - Eigenschaften:
- *    Button:            #propsToggle
- *    Menü:              #propsMenu
- *
- * - Lore:
- *    Wrapper:           #loreDropdown
- *    Button:            #loreToggle
- *    Menü:              #loreMenu
- *
- * - Zutaten:
- *    Wrapper:           #zutatenDropdown
- *    Button:            #zutatenToggle
- *    Menü:              #zutatenMenu
+ * JSONs bleiben wie sie sind.
  */
 
-document.addEventListener("DOMContentLoaded", () => {
+// ============================================================
+// GLOBAL STATE (Filter)
+// ============================================================
+window.REZEPTE_FILTER = window.REZEPTE_FILTER || {
+  // Eigenschaften:
+  // - excluded: abgewählte Defaults (Allergen/Trigger)
+  // - required: aktiv angehakte Non-Defaults (Ernährung/Speise/Verwendung/etc.)
+  eigenschaften_excluded: [],
+  eigenschaften_required: [],
+
+  // Lore:
+  lore_selected: [],
+
+  // Saison:
+  saison_selected: "",
+
+  // Zutaten:
+  zutaten_need: [],
+  zutaten_nohave: [],
+
+  // Nährstoffe:
+  naehrstoffe_selected: [],
+
+  // Suche:
+  query: "",
+};
+
+// ============================================================
+// CACHES
+// ============================================================
+let __CACHE_REZEPTE = null;
+let __CACHE_EIGENSCHAFTEN = null;
+let __CACHE_LORE = null;
+let __CACHE_SAISON = null;
+let __CACHE_ZUTATEN = null;
+let __CACHE_NAEHRSTOFFE = null;
+
+async function loadJsonOnce(url, key) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText} (${url})`);
+  const data = await res.json();
+  const arr = Array.isArray(data?.[key]) ? data[key] : [];
+  return arr;
+}
+
+async function loadRezepteOnce() {
+  if (__CACHE_REZEPTE) return __CACHE_REZEPTE;
+  const res = await fetch("./daten/rezepte.json");
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+  const data = await res.json();
+  __CACHE_REZEPTE = Array.isArray(data?.rezepte) ? data.rezepte : [];
+  return __CACHE_REZEPTE;
+}
+
+async function loadEigenschaftenOnce() {
+  if (__CACHE_EIGENSCHAFTEN) return __CACHE_EIGENSCHAFTEN;
+  __CACHE_EIGENSCHAFTEN = await loadJsonOnce("./daten/eigenschaften.json", "eigenschaften");
+  return __CACHE_EIGENSCHAFTEN;
+}
+
+async function loadLoreOnce() {
+  if (__CACHE_LORE) return __CACHE_LORE;
+  __CACHE_LORE = await loadJsonOnce("./daten/lore.json", "lore");
+  return __CACHE_LORE;
+}
+
+async function loadSaisonOnce() {
+  if (__CACHE_SAISON) return __CACHE_SAISON;
+  __CACHE_SAISON = await loadJsonOnce("./daten/saison.json", "saison_labels");
+  return __CACHE_SAISON;
+}
+
+async function loadZutatenOnce() {
+  if (__CACHE_ZUTATEN) return __CACHE_ZUTATEN;
+  __CACHE_ZUTATEN = await loadJsonOnce("./daten/zutaten.json", "zutaten");
+  return __CACHE_ZUTATEN;
+}
+
+async function loadNaehrstoffeOnce() {
+  if (__CACHE_NAEHRSTOFFE) return __CACHE_NAEHRSTOFFE;
+  __CACHE_NAEHRSTOFFE = await loadJsonOnce("./daten/naehrstoffe.json", "naehrstoffe");
+  return __CACHE_NAEHRSTOFFE;
+}
+
+// ============================================================
+// DOM READY
+// ============================================================
+document.addEventListener("DOMContentLoaded", async () => {
   initThemeToggle();
   initSaisonSelect();
 
@@ -42,15 +111,18 @@ document.addEventListener("DOMContentLoaded", () => {
     jsonUrl: "./daten/eigenschaften.json",
     arrayKey: "eigenschaften",
 
-    // ✅ Standard: Alles in diesen Gruppen ist ANGEHAKT (erlaubt)
-    // Abwählen = ausschliessen
+    // Default: Allergen + Trigger sind ANGEHAKT (dürfen enthalten)
     defaultChecked: (entry) =>
       String(entry.gruppe) === "Allergen (enthält)" ||
       String(entry.gruppe) === "Unverträglichkeit / Trigger",
 
-    // Badge zählt ausgeschlossene (abwählte Defaults)
+    // "deselect" Mode: Defaults zählen als "darf enthalten".
+    // Abwählen = ausschliessen.
     badgeMode: "deselect",
     onChangeLogPrefix: "Eigenschaften",
+
+    // Wenn sich etwas ändert -> Liste neu filtern
+    onAnyChange: () => scheduleRenderRezepteListe(),
   });
 
   // Lore Dropdown
@@ -64,8 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
     arrayKey: "lore",
     defaultChecked: () => false,
     onChangeLogPrefix: "Lore",
-
-    // ✅ Text im Dropdown anpassen (nur Lore)
     formatLabel: (entry) => {
       let label = String(entry.label || "");
       if (String(entry.gruppe) === "Preis") {
@@ -74,9 +144,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       return label;
     },
+    onAnyChange: () => scheduleRenderRezepteListe(),
   });
 
-  // Nährstoffe Dropdown (Checkboxen) + "relativ hohe Werte" (Ranking)
+  // Nährstoffe Dropdown
   initCheckboxDropdown({
     dropdownId: "nutrDropdown",
     toggleId: "nutrToggle",
@@ -87,21 +158,19 @@ document.addEventListener("DOMContentLoaded", () => {
     arrayKey: "naehrstoffe",
     defaultChecked: () => false,
     onChangeLogPrefix: "Nährstoffe",
-
-    // Anzeige: Icon + Einheit
     formatLabel: (entry) => {
       const label = String(entry.label || "");
       const unit = entry.einheit ? ` (${entry.einheit})` : "";
       return `${label}${unit}`;
     },
-
-    // wenn Auswahl ändert -> Ranking updaten
     onSelectionChange: (checkedIds) => {
-      updateNaehrstoffRanking(checkedIds);
+      window.REZEPTE_FILTER.naehrstoffe_selected = (checkedIds || []).map(String);
+      scheduleRenderRezepteListe();
     },
+    onAnyChange: () => scheduleRenderRezepteListe(),
   });
 
-  // Zutaten Dropdown (3 Zustände + Info + Sperren durch Eigenschaften)
+  // Zutaten Dropdown (3 Zustände)
   initZutatenDropdown({
     dropdownId: "zutatenDropdown",
     toggleId: "zutatenToggle",
@@ -111,7 +180,23 @@ document.addEventListener("DOMContentLoaded", () => {
     jsonUrl: "./daten/zutaten.json",
     arrayKey: "zutaten",
     propsMenuId: "propsMenu",
+    onAnyChange: () => scheduleRenderRezepteListe(),
   });
+
+  // Suche Input (kein id -> wir nehmen placeholder)
+  const searchInput =
+    document.querySelector('input[placeholder="Suche Rezept..."]') ||
+    document.querySelector('input[placeholder*="Suche"]');
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      window.REZEPTE_FILTER.query = String(searchInput.value || "").trim();
+      scheduleRenderRezepteListe();
+    });
+  }
+
+  // initial render
+  scheduleRenderRezepteListe();
 });
 
 // ============================================================
@@ -119,10 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ============================================================
 function initThemeToggle() {
   const toggle = document.getElementById("themeToggle");
-  if (!toggle) {
-    console.warn('Theme Toggle: Button mit id="themeToggle" nicht gefunden.');
-    return;
-  }
+  if (!toggle) return;
 
   toggle.addEventListener("click", () => {
     document.body.classList.toggle("dark");
@@ -135,28 +217,19 @@ function initThemeToggle() {
 // ============================================================
 function initSaisonSelect() {
   const select = document.getElementById("seasonSelect");
-  if (!select) {
-    console.warn('Saison Select: <select id="seasonSelect"> nicht gefunden.');
-    return;
-  }
+  if (!select) return;
 
   select.value = "";
-
-  loadSaisonDataAndFillSelect(select).catch((err) => {
-    console.error("Fehler beim Laden von ./daten/saison.json:", err);
-  });
+  loadSaisonDataAndFillSelect(select).catch(console.error);
 
   select.addEventListener("change", (e) => {
-    console.log("Saison/Monat gewählt:", e.target.value || "Alle");
+    window.REZEPTE_FILTER.saison_selected = String(e.target.value || "");
+    scheduleRenderRezepteListe();
   });
 }
 
 async function loadSaisonDataAndFillSelect(selectEl) {
-  const res = await fetch("./daten/saison.json");
-  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
-
-  const data = await res.json();
-  const list = Array.isArray(data.saison_labels) ? data.saison_labels : [];
+  const list = await loadSaisonOnce();
 
   while (selectEl.options.length > 1) selectEl.remove(1);
 
@@ -179,18 +252,14 @@ async function loadSaisonDataAndFillSelect(selectEl) {
 
   selectEl.appendChild(optgroupSeasons);
   selectEl.appendChild(optgroupMonths);
-
   selectEl.value = "";
 }
 
 // ============================================================
-// GENERISCHES DROPDOWN (Checkboxen) – für Eigenschaften UND Lore
+// GENERISCHES DROPDOWN (Checkboxen)
+// - gruppiert nach gruppe
+// - optional untergruppe (details/summary)
 // ============================================================
-
-/**
- * Gruppiert nach entry.gruppe.
- * Unterstützt optionale entry.untergruppe (einklappbar).
- */
 async function initCheckboxDropdown(cfg) {
   const toggleBtn = document.getElementById(cfg.toggleId);
   const menu = document.getElementById(cfg.menuId);
@@ -199,16 +268,11 @@ async function initCheckboxDropdown(cfg) {
     ? document.getElementById(cfg.dropdownId)
     : toggleBtn?.closest(".dropdown");
 
-  if (!dd || !toggleBtn || !menu) {
-    console.warn(
-      `Dropdown fehlt: ${cfg.dropdownId || "(auto .dropdown)"}/${cfg.toggleId}/${cfg.menuId} (bitte HTML IDs prüfen).`,
-    );
-    return;
-  }
+  if (!dd || !toggleBtn || !menu) return;
 
   menu.innerHTML = "";
 
-  // Badge am Button
+  // Badge
   toggleBtn.querySelectorAll(".dropdown-badge").forEach((b) => b.remove());
   const badge = document.createElement("span");
   badge.className = "dropdown-badge";
@@ -216,7 +280,7 @@ async function initCheckboxDropdown(cfg) {
   badge.textContent = "";
   toggleBtn.appendChild(badge);
 
-  // Header (Titel + "Alle")
+  // Header
   const head = document.createElement("li");
   head.innerHTML = `
     <div class="dropdown-menu__head">
@@ -227,7 +291,7 @@ async function initCheckboxDropdown(cfg) {
   menu.appendChild(head);
   const clearBtn = head.querySelector("button");
 
-  // Öffnen/Schliessen
+  // Open/close
   toggleBtn.addEventListener("click", () => {
     const isOpen = dd.classList.toggle("open");
     toggleBtn.setAttribute("aria-expanded", String(isOpen));
@@ -247,13 +311,13 @@ async function initCheckboxDropdown(cfg) {
     }
   });
 
-  // JSON laden
+  // Load JSON
   const res = await fetch(cfg.jsonUrl);
   if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
   const data = await res.json();
   const list = Array.isArray(data?.[cfg.arrayKey]) ? data[cfg.arrayKey] : [];
 
-  // Nach Gruppen sortieren
+  // Group
   const byGroup = new Map();
   for (const item of list) {
     if (!item || !item.id || !item.label || !item.gruppe) continue;
@@ -262,7 +326,6 @@ async function initCheckboxDropdown(cfg) {
     byGroup.get(group).push(item);
   }
 
-  // Gruppen rendern
   for (const [groupName, itemsRaw] of byGroup.entries()) {
     const items = [...itemsRaw].sort((a, b) => {
       const pa = Number(a.prioritaet ?? 9999);
@@ -279,12 +342,12 @@ async function initCheckboxDropdown(cfg) {
     title.textContent = groupName;
     groupLi.appendChild(title);
 
-    // Haupt-Einträge (ohne untergruppe)
+    // main entries
     for (const entry of items.filter((x) => !x.untergruppe)) {
       groupLi.appendChild(makeCheckboxRow(entry));
     }
 
-    // Untergruppen (einklappbar)
+    // subgroups
     const subGroups = new Map();
     for (const entry of items) {
       if (!entry.untergruppe) continue;
@@ -305,9 +368,7 @@ async function initCheckboxDropdown(cfg) {
       const box = document.createElement("div");
       box.className = "dropdown-subgroup__body";
 
-      for (const entry of subItems) {
-        box.appendChild(makeCheckboxRow(entry));
-      }
+      for (const entry of subItems) box.appendChild(makeCheckboxRow(entry));
 
       details.appendChild(box);
       groupLi.appendChild(details);
@@ -316,18 +377,18 @@ async function initCheckboxDropdown(cfg) {
     menu.appendChild(groupLi);
   }
 
-  // "Alle" -> Standardzustand wiederherstellen
-
+  // Clear -> restore defaults
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
       menu.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
         cb.checked = cb.dataset.default === "1";
       });
-      updateBadgeAndLog();
+      updateBadgeAndState();
+      if (typeof cfg.onAnyChange === "function") cfg.onAnyChange();
     });
   }
 
-  updateBadgeAndLog();
+  updateBadgeAndState();
 
   // ---------- helpers ----------
   function makeCheckboxRow(entry) {
@@ -338,7 +399,6 @@ async function initCheckboxDropdown(cfg) {
     cb.type = "checkbox";
     cb.value = String(entry.id);
 
-    // Standardzustand
     let def = false;
     try {
       def = Boolean(cfg.defaultChecked?.(entry));
@@ -360,80 +420,67 @@ async function initCheckboxDropdown(cfg) {
     label.appendChild(text);
 
     cb.addEventListener("change", () => {
-      // ✅ Im "deselect" Modus (Eigenschaften): nie alles abwählen lassen.
-      // Standard = "kann enthalten" (Default-Checkboxen sind an).
+      // In "deselect": nicht alle Defaults abwählen lassen
       if (cfg.badgeMode === "deselect") {
-        const defaults = [
-          ...menu.querySelectorAll('input[type="checkbox"]'),
-        ].filter((x) => x.dataset.default === "1");
-
+        const all = [...menu.querySelectorAll('input[type="checkbox"]')];
+        const defaults = all.filter((x) => x.dataset.default === "1");
         const checkedDefaults = defaults.filter((x) => x.checked);
 
-        // Wenn der User gerade die letzte Default-Option abwählen will -> blocken
-        if (
-          !cb.checked &&
-          cb.dataset.default === "1" &&
-          checkedDefaults.length === 0
-        ) {
+        if (!cb.checked && cb.dataset.default === "1" && checkedDefaults.length === 0) {
           cb.checked = true;
         }
       }
 
-      updateBadgeAndLog();
+      updateBadgeAndState();
+      if (typeof cfg.onAnyChange === "function") cfg.onAnyChange();
     });
 
     return label;
   }
 
-  function updateBadgeAndLog() {
-    // Modus: Abwählen = Ausschliessen
+  function updateBadgeAndState() {
+    // deselect mode: compute excluded defaults + required non-defaults
     if (cfg.badgeMode === "deselect") {
       const all = [...menu.querySelectorAll('input[type="checkbox"]')];
       const defaults = all.filter((cb) => cb.dataset.default === "1");
-      const excluded = defaults
-        .filter((cb) => !cb.checked)
-        .map((cb) => cb.value);
+      const nonDefaults = all.filter((cb) => cb.dataset.default === "0");
 
-      if (excluded.length === 0) {
-        badge.hidden = true;
-        badge.textContent = "";
-        console.log(`${cfg.onChangeLogPrefix}:`, "Alle");
-      } else {
-        badge.hidden = false;
-        badge.textContent = String(excluded.length);
-        console.log(`${cfg.onChangeLogPrefix} ausgeschlossen:`, excluded);
-      }
+      const excluded = defaults.filter((cb) => !cb.checked).map((cb) => cb.value);
+      const required = nonDefaults.filter((cb) => cb.checked).map((cb) => cb.value);
 
-      // Optional global
-      window.REZEPTE_FILTER = window.REZEPTE_FILTER || {};
+      // Badge zeigt: excluded + required (weil sonst sieht man nicht, dass man z.B. Picknick gesetzt hat)
+      const badgeCount = excluded.length + required.length;
+      badge.hidden = badgeCount === 0;
+      badge.textContent = badgeCount ? String(badgeCount) : "";
+
       window.REZEPTE_FILTER.eigenschaften_excluded = excluded;
+      window.REZEPTE_FILTER.eigenschaften_required = required;
+
+      console.log("Eigenschaften ausgeschlossen:", excluded);
+      console.log("Eigenschaften erforderlich:", required);
       return;
     }
 
-    // Standard-Modus: angehakt = ausgewählt
-    const checked = [
-      ...menu.querySelectorAll('input[type="checkbox"]:checked'),
-    ].map((cb) => cb.value);
+    // standard mode: checked = selected
+    const checked = [...menu.querySelectorAll('input[type="checkbox"]:checked')].map((cb) => cb.value);
 
-    if (checked.length === 0) {
-      badge.hidden = true;
-      badge.textContent = "";
-      console.log(`${cfg.onChangeLogPrefix}:`, "Alle");
-    } else {
-      badge.hidden = false;
-      badge.textContent = String(checked.length);
-      console.log(`${cfg.onChangeLogPrefix} gewählt:`, checked);
+    badge.hidden = checked.length === 0;
+    badge.textContent = checked.length ? String(checked.length) : "";
+
+    if (cfg.onChangeLogPrefix) {
+      console.log(`${cfg.onChangeLogPrefix} gewählt:`, checked.length ? checked : "Alle");
     }
 
-    // optional callback (z.B. Nährstoffe Ranking)
-    if (typeof cfg.onSelectionChange === "function") {
-      cfg.onSelectionChange(checked);
-    }
+    // store per dropdown
+    if (cfg.arrayKey === "lore") window.REZEPTE_FILTER.lore_selected = checked;
+    if (cfg.arrayKey === "naehrstoffe") window.REZEPTE_FILTER.naehrstoffe_selected = checked;
+
+    if (typeof cfg.onSelectionChange === "function") cfg.onSelectionChange(checked);
   }
 }
 
 // ============================================================
-// ZUTATEN DROPDOWN (3 Zustände + Info + Sperren durch Eigenschaften)
+// ZUTATEN DROPDOWN (allow / need / nohave)
 // ============================================================
 async function initZutatenDropdown(cfg) {
   const toggleBtn = document.getElementById(cfg.toggleId);
@@ -443,16 +490,11 @@ async function initZutatenDropdown(cfg) {
     ? document.getElementById(cfg.dropdownId)
     : toggleBtn?.closest(".dropdown");
 
-  if (!dd || !toggleBtn || !menu) {
-    console.warn(
-      `Zutaten-Dropdown fehlt: ${cfg.dropdownId || "(auto .dropdown)"}/${cfg.toggleId}/${cfg.menuId} (bitte HTML IDs prüfen).`,
-    );
-    return;
-  }
+  if (!dd || !toggleBtn || !menu) return;
 
   menu.innerHTML = "";
 
-  // Badge am Button
+  // Badge
   toggleBtn.querySelectorAll(".dropdown-badge").forEach((b) => b.remove());
   const badge = document.createElement("span");
   badge.className = "dropdown-badge";
@@ -471,7 +513,7 @@ async function initZutatenDropdown(cfg) {
   menu.appendChild(head);
   const clearBtn = head.querySelector("button");
 
-  // Öffnen/Schliessen
+  // Open/close
   toggleBtn.addEventListener("click", () => {
     const isOpen = dd.classList.toggle("open");
     toggleBtn.setAttribute("aria-expanded", String(isOpen));
@@ -497,7 +539,7 @@ async function initZutatenDropdown(cfg) {
   const data = await res.json();
   const list = Array.isArray(data?.[cfg.arrayKey]) ? data[cfg.arrayKey] : [];
 
-  // Zustände: need/have/nohave/""
+  // state map
   const stateById = new Map();
 
   const items = [...list]
@@ -528,9 +570,7 @@ async function initZutatenDropdown(cfg) {
 
     controls.appendChild(makeStateBtn("🟦", "kann enthalten", "allow", z.id));
     controls.appendChild(makeStateBtn("⭐", "muss enthalten", "need", z.id));
-    controls.appendChild(
-      makeStateBtn("🚫", "darf nicht enthalten", "nohave", z.id),
-    );
+    controls.appendChild(makeStateBtn("🚫", "darf nicht enthalten", "nohave", z.id));
 
     li.appendChild(infoBtn);
     li.appendChild(nameSpan);
@@ -539,39 +579,17 @@ async function initZutatenDropdown(cfg) {
     menu.appendChild(li);
   }
 
-  // ✅ Standard: alles auf "kann enthalten"
-  for (const z of items) {
-    stateById.set(String(z.id), "allow");
-    const li = menu.querySelector(
-      `li.dropdown-item--ingredient[data-ingredient-id="${CSS.escape(String(z.id))}"]`,
-    );
-    if (li) {
-      li.querySelectorAll(".ingredient-state-btn").forEach((b) => {
-        const isActive = b.dataset.state === "allow";
-        b.dataset.active = isActive ? "1" : "0";
-        b.setAttribute("aria-pressed", isActive ? "true" : "false");
-      });
-    }
-  }
+  // default: allow
+  for (const z of items) stateById.set(String(z.id), "allow");
+  paintAllRows();
 
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
-      // ✅ Reset auf Standard: alles "kann enthalten"
-      for (const z of items) {
-        stateById.set(String(z.id), "allow");
-      }
-
-      menu.querySelectorAll("li.dropdown-item--ingredient").forEach((li) => {
-        li.querySelectorAll(".ingredient-state-btn").forEach((b) => {
-          const isActive = b.dataset.state === "allow";
-          b.dataset.active = isActive ? "1" : "0";
-          b.setAttribute("aria-pressed", isActive ? "true" : "false");
-        });
-      });
-
-      updateBadge();
+      for (const z of items) stateById.set(String(z.id), "allow");
+      paintAllRows();
       refreshDisabledStates();
-      logState();
+      updateBadgeAndStore();
+      if (typeof cfg.onAnyChange === "function") cfg.onAnyChange();
     });
   }
 
@@ -579,12 +597,13 @@ async function initZutatenDropdown(cfg) {
   if (propsMenu) {
     propsMenu.addEventListener("change", () => {
       refreshDisabledStates();
+      updateBadgeAndStore();
+      if (typeof cfg.onAnyChange === "function") cfg.onAnyChange();
     });
   }
 
   refreshDisabledStates();
-  updateBadge();
-  logState();
+  updateBadgeAndStore();
 
   // ---------- helpers ----------
   function makeStateBtn(symbol, title, stateKey, ingredientId) {
@@ -606,69 +625,55 @@ async function initZutatenDropdown(cfg) {
       if (li && li.dataset.disabled === "1") return;
 
       const id = String(ingredientId);
-      const current = stateById.get(id) || "allow";
+      stateById.set(id, stateKey);
 
-      // ✅ Nie leer werden lassen:
-      // Klick setzt einfach den Zustand, ohne Toggle-aus
-      const next = stateKey;
-      stateById.set(id, next);
-
-      const row = b.closest("li");
-      if (row) {
-        row.querySelectorAll(".ingredient-state-btn").forEach((x) => {
-          const isActive = (stateById.get(id) || "") === x.dataset.state;
-          x.dataset.active = isActive ? "1" : "0";
-          x.setAttribute("aria-pressed", isActive ? "true" : "false");
-        });
-      }
-
-      updateBadge();
-      logState();
+      paintRow(id);
+      updateBadgeAndStore();
+      if (typeof cfg.onAnyChange === "function") cfg.onAnyChange();
     });
 
     return b;
   }
 
-  function updateBadge() {
-    let count = 0;
-    for (const v of stateById.values()) {
-      if (v === "need" || v === "nohave") count++;
-    }
+  function paintRow(id) {
+    const li = menu.querySelector(
+      `li.dropdown-item--ingredient[data-ingredient-id="${CSS.escape(String(id))}"]`,
+    );
+    if (!li) return;
 
-    if (count === 0) {
-      badge.hidden = true;
-      badge.textContent = "";
-      return;
-    }
-    badge.hidden = false;
-    badge.textContent = String(count);
+    li.querySelectorAll(".ingredient-state-btn").forEach((btn) => {
+      const isActive = (stateById.get(String(id)) || "allow") === btn.dataset.state;
+      btn.dataset.active = isActive ? "1" : "0";
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+    });
   }
 
-  function logState() {
-    const allow = [];
+  function paintAllRows() {
+    for (const z of items) paintRow(z.id);
+  }
+
+  function updateBadgeAndStore() {
     const need = [];
     const nohave = [];
 
     for (const [id, v] of stateById.entries()) {
       if (v === "need") need.push(id);
-      else if (v === "have") have.push(id);
       else if (v === "nohave") nohave.push(id);
     }
 
-    window.REZEPTE_FILTER = window.REZEPTE_FILTER || {};
-    window.REZEPTE_FILTER.zutaten_allow = allow;
+    const count = need.length + nohave.length;
+    badge.hidden = count === 0;
+    badge.textContent = count ? String(count) : "";
+
     window.REZEPTE_FILTER.zutaten_need = need;
     window.REZEPTE_FILTER.zutaten_nohave = nohave;
 
-    console.log("Zutaten (allow):", allow);
-    console.log("Zutaten (need):", need);
-    console.log("Zutaten (nohave):", nohave);
+    console.log("Zutaten need:", need);
+    console.log("Zutaten nohave:", nohave);
   }
 
   function refreshDisabledStates() {
-    const excludedProps = getExcludedEigenschaftenIds(cfg.propsMenuId);
-
-    // keine Excludes -> alles aktiv
+    const excludedProps = window.REZEPTE_FILTER.eigenschaften_excluded || [];
     if (!excludedProps.length) {
       menu.querySelectorAll("li.dropdown-item--ingredient").forEach((li) => {
         li.dataset.disabled = "0";
@@ -679,14 +684,13 @@ async function initZutatenDropdown(cfg) {
       return;
     }
 
+    // Zutaten Daten map
     const zById = new Map(items.map((z) => [String(z.id), z]));
 
     menu.querySelectorAll("li.dropdown-item--ingredient").forEach((li) => {
       const id = String(li.dataset.ingredientId || "");
       const z = zById.get(id);
-      const props = Array.isArray(z?.eigenschaften_ids)
-        ? z.eigenschaften_ids
-        : [];
+      const props = Array.isArray(z?.eigenschaften_ids) ? z.eigenschaften_ids.map(String) : [];
 
       const hits = props.filter((p) => excludedProps.includes(String(p)));
       const disabled = hits.length > 0;
@@ -696,43 +700,25 @@ async function initZutatenDropdown(cfg) {
       li.style.pointerEvents = disabled ? "none" : "";
       li.title = disabled ? `Gesperrt wegen: ${hits.join(", ")}` : "";
 
-      // wenn gesperrt: Zustand zurück auf Standard ("allow")
+      // wenn gesperrt -> Zustand zurück auf allow
       if (disabled) {
         stateById.set(id, "allow");
-        li.querySelectorAll(".ingredient-state-btn").forEach((b) => {
-          const isActive = b.dataset.state === "allow";
-          b.dataset.active = isActive ? "1" : "0";
-          b.setAttribute("aria-pressed", isActive ? "true" : "false");
-        });
+        paintRow(id);
       }
     });
-
-    updateBadge();
-    logState();
   }
 
   function openIngredientInfo(z) {
     const imgPath = z?.bilder?.pfad ? String(z.bilder.pfad) : "";
-    const imgAlt = z?.bilder?.alt
-      ? String(z.bilder.alt)
-      : String(z.name || "Zutat");
+    const imgAlt = z?.bilder?.alt ? String(z.bilder.alt) : String(z.name || "Zutat");
 
     const lager = z?.lagerung?.ort ? String(z.lagerung.ort) : "";
-    const halt = Number.isFinite(z?.lagerung?.haltbarkeit_tage)
-      ? `${z.lagerung.haltbarkeit_tage} Tage`
-      : "";
+    const halt = Number.isFinite(z?.lagerung?.haltbarkeit_tage) ? `${z.lagerung.haltbarkeit_tage} Tage` : "";
     const tipps = Array.isArray(z?.lagerung?.tipps) ? z.lagerung.tipps : [];
+    const schlecht = Array.isArray(z?.schlecht_erkennen) ? z.schlecht_erkennen : [];
 
-    const schlecht = Array.isArray(z?.schlecht_erkennen)
-      ? z.schlecht_erkennen
-      : [];
-
-    const saisonMonate = Array.isArray(z?.saison?.schweiz_monate)
-      ? z.saison.schweiz_monate
-      : [];
-    const saisonLabel = Array.isArray(z?.saison?.alternativ_labels)
-      ? z.saison.alternativ_labels.join(", ")
-      : "";
+    const saisonMonate = Array.isArray(z?.saison?.schweiz_monate) ? z.saison.schweiz_monate : [];
+    const saisonLabel = Array.isArray(z?.saison?.alternativ_labels) ? z.saison.alternativ_labels.join(", ") : "";
 
     const kcal = z?.naehrwerte_pro_100g?.kcal ?? "";
     const protein = z?.naehrwerte_pro_100g?.protein_g ?? "";
@@ -755,7 +741,7 @@ async function initZutatenDropdown(cfg) {
           ${
             schlecht.length
               ? `<div style="font-weight:600; margin-top:10px;">Schlecht erkennen</div>
-          <ul style="margin:6px 0 0 18px;">${schlecht.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul>`
+                 <ul style="margin:6px 0 0 18px;">${schlecht.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul>`
               : ""
           }
 
@@ -785,26 +771,323 @@ async function initZutatenDropdown(cfg) {
       document.body.appendChild(dlg);
     }
 
-    const body = dlg.querySelector("#ingredientDialogBody");
-    body.innerHTML = html;
+    dlg.querySelector("#ingredientDialogBody").innerHTML = html;
     dlg.showModal();
   }
 }
 
 // ============================================================
-// Helper: excluded Eigenschaften (abwählte Defaults)
+// REZEPTLISTE (FILTER + RENDER)
 // ============================================================
-function getExcludedEigenschaftenIds(propsMenuId) {
-  const menu = document.getElementById(propsMenuId);
-  if (!menu) return [];
 
-  const all = [...menu.querySelectorAll('input[type="checkbox"]')];
-  const defaults = all.filter((cb) => cb.dataset.default === "1");
-  return defaults.filter((cb) => !cb.checked).map((cb) => cb.value);
+let __RENDER_TIMER = null;
+function scheduleRenderRezepteListe() {
+  clearTimeout(__RENDER_TIMER);
+  __RENDER_TIMER = setTimeout(() => {
+    renderRezepteListe().catch(console.error);
+  }, 60);
+}
+
+async function renderRezepteListe() {
+  const container = document.getElementById("rezepteListe");
+  if (!container) return;
+
+  const [rezepte, eigenschaften, lore, zutaten, saisonLabels, naehrstoffe] =
+    await Promise.all([
+      loadRezepteOnce(),
+      loadEigenschaftenOnce(),
+      loadLoreOnce(),
+      loadZutatenOnce(),
+      loadSaisonOnce(),
+      loadNaehrstoffeOnce(),
+    ]);
+
+  const eigById = new Map(eigenschaften.map((e) => [String(e.id), e]));
+  const loreById = new Map(lore.map((l) => [String(l.id), l]));
+  const zutatById = new Map(zutaten.map((z) => [String(z.id), z]));
+  const saisonById = new Map(saisonLabels.map((s) => [String(s.id), s]));
+  const nutrById = new Map(naehrstoffe.map((n) => [String(n.id), n]));
+
+  // resolve season months
+  const seasonId = String(window.REZEPTE_FILTER.saison_selected || "");
+  const seasonMonths = resolveSeasonMonths(seasonId, saisonById); // [] = no filter
+
+  // filter state
+  const excludedProps = (window.REZEPTE_FILTER.eigenschaften_excluded || []).map(String);
+  const requiredProps = (window.REZEPTE_FILTER.eigenschaften_required || []).map(String);
+  const selectedLore = (window.REZEPTE_FILTER.lore_selected || []).map(String);
+  const needZutaten = (window.REZEPTE_FILTER.zutaten_need || []).map(String);
+  const nohaveZutaten = (window.REZEPTE_FILTER.zutaten_nohave || []).map(String);
+  const query = String(window.REZEPTE_FILTER.query || "").toLowerCase();
+
+  // nutrient selection -> sort
+  const selectedNutrients = (window.REZEPTE_FILTER.naehrstoffe_selected || []).map(String);
+
+  // filter
+  let filtered = rezepte.filter((r) => {
+    const rid = String(r?.id || "");
+    const titel = String(r?.titel || "");
+
+    const recipeEigIds = normalizeArray(r?.tags?.eigenschaften ?? r?.eigenschaften_ids);
+    const recipeLoreIds = normalizeArray(r?.tags?.lore ?? r?.lore_ids);
+
+    const ingredientIds = extractIngredientIds(r);
+
+    // ingredient props union
+    const ingredientProps = new Set();
+    for (const zid of ingredientIds) {
+      const z = zutatById.get(zid);
+      const props = Array.isArray(z?.eigenschaften_ids) ? z.eigenschaften_ids : [];
+      props.forEach((p) => ingredientProps.add(String(p)));
+    }
+
+    // allergen props from recipe (alg_ei -> prop_enthaelt_ei)
+    const allergenProps = new Set();
+    const enthaelt = normalizeArray(r?.allergene?.enthaelt);
+    for (const a of enthaelt) {
+      if (a.startsWith("alg_")) allergenProps.add(`prop_enthaelt_${a.slice(4)}`);
+    }
+
+    // ----- EXCLUSIONS (strict) -----
+    // If any excluded prop hits recipeEigIds OR ingredientProps OR allergenProps -> reject
+    if (excludedProps.length) {
+      for (const p of excludedProps) {
+        if (recipeEigIds.includes(p)) return false;
+        if (ingredientProps.has(p)) return false;
+        if (allergenProps.has(p)) return false;
+      }
+    }
+
+    // ----- REQUIRED properties -----
+    // If user checked e.g. Picknick/Unterwegs -> recipe must include them (recipe tags preferred),
+    // fallback: ingredientProps also counts (z.B. wenn du sowas später auf Zutaten legst).
+    if (requiredProps.length) {
+      for (const p of requiredProps) {
+        if (!recipeEigIds.includes(p) && !ingredientProps.has(p)) return false;
+      }
+    }
+
+    // ----- LORE -----
+    // strict: all selected lore ids must be present
+    if (selectedLore.length) {
+      for (const lid of selectedLore) {
+        if (!recipeLoreIds.includes(lid)) return false;
+      }
+    }
+
+    // ----- ZUTATEN must contain -----
+    if (needZutaten.length) {
+      for (const zid of needZutaten) {
+        if (!ingredientIds.includes(zid)) return false;
+      }
+    }
+
+    // ----- ZUTATEN must NOT contain -----
+    if (nohaveZutaten.length) {
+      for (const zid of nohaveZutaten) {
+        if (ingredientIds.includes(zid)) return false;
+      }
+    }
+
+    // ----- SAISON -----
+    // strict: every ingredient that has months defined must intersect seasonMonths
+    if (seasonMonths.length) {
+      for (const zid of ingredientIds) {
+        const z = zutatById.get(zid);
+        const months = Array.isArray(z?.saison?.schweiz_monate) ? z.saison.schweiz_monate : [];
+        if (months.length) {
+          if (!months.some((m) => seasonMonths.includes(Number(m)))) return false;
+        }
+      }
+    }
+
+    // ----- SEARCH -----
+    if (query) {
+      // haystack: title + eig labels + lore labels + ingredient names
+      const eigText = recipeEigIds
+        .map((id) => eigById.get(id)?.label || id)
+        .join(" ");
+      const loreText = recipeLoreIds
+        .map((id) => loreById.get(id)?.label || id)
+        .join(" ");
+      const ingText = ingredientIds
+        .map((id) => zutatById.get(id)?.name || id)
+        .join(" ");
+
+      const hay = `${titel} ${eigText} ${loreText} ${ingText}`.toLowerCase();
+      if (!hay.includes(query)) return false;
+    }
+
+    return true;
+  });
+
+  // sort by nutrients if selected, else by title
+  if (selectedNutrients.length) {
+    const selected = selectedNutrients.map((id) => nutrById.get(id)).filter(Boolean);
+    const maxById = new Map();
+
+    for (const n of selected) {
+      const q = String(n.quelle || "");
+      let max = 0;
+      for (const r of rezepte) {
+        const v = getByPath(r, q);
+        if (v > max) max = v;
+      }
+      maxById.set(String(n.id), max);
+    }
+
+    filtered = filtered
+      .map((r) => {
+        let score = 0;
+        for (const n of selected) {
+          const id = String(n.id);
+          const max = Number(maxById.get(id) || 0);
+          const v = getByPath(r, n.quelle);
+          score += max > 0 ? v / max : 0;
+        }
+        return { r, score };
+      })
+      .sort((a, b) => b.score - a.score)
+      .map((x) => x.r);
+  } else {
+    filtered.sort((a, b) => String(a?.titel || "").localeCompare(String(b?.titel || ""), "de"));
+  }
+
+  // render
+  container.innerHTML = "";
+
+  for (const r of filtered) {
+    const titel = String(r?.titel || "");
+    const id = String(r?.id || "");
+    const bildPfad = r?.bild?.pfad ? String(r.bild.pfad) : String(r?.bild || "");
+    const bildAlt = r?.bild?.alt ? String(r.bild.alt) : titel;
+
+    const recipeEigIds = normalizeArray(r?.tags?.eigenschaften ?? r?.eigenschaften_ids);
+    const recipeLoreIds = normalizeArray(r?.tags?.lore ?? r?.lore_ids);
+
+    // groups for display
+    const erlaubteGruppen = ["Ernährung", "Allergen (enthält)", "Speise", "Verwendung"];
+    const gruppiert = {};
+    erlaubteGruppen.forEach((g) => (gruppiert[g] = []));
+
+    for (const eid of recipeEigIds) {
+      const obj = eigById.get(String(eid));
+      if (!obj) continue;
+      if (erlaubteGruppen.includes(String(obj.gruppe))) gruppiert[String(obj.gruppe)].push(obj);
+    }
+
+    const eigenschaftenHTML = erlaubteGruppen
+      .map((gruppe) => {
+        const liste = gruppiert[gruppe] || [];
+        if (!liste.length) return "";
+
+        const chips = liste
+          .map((e) => `<span class="tag-chip">${escapeHtml(e.icon || "")} ${escapeHtml(e.label || "")}</span>`)
+          .join("");
+
+        return `
+          <div class="prop-group">
+            <div class="prop-group-title">${escapeHtml(gruppe)}</div>
+            <div class="prop-items">${chips}</div>
+          </div>
+        `;
+      })
+      .join("");
+
+    const loreText = recipeLoreIds
+      .map((lid) => loreById.get(String(lid))?.label || String(lid))
+      .filter(Boolean)
+      .join(", ");
+
+    // Link target (später deine Detailseite)
+    const href = `rezept.html?id=${encodeURIComponent(id)}`;
+
+    const a = document.createElement("a");
+    a.className = "rezept-card";
+    a.href = href;
+    a.setAttribute("data-rezept-id", id);
+
+    a.innerHTML = `
+      <div class="rezept-meta">
+        <h3 class="rezept-title">${escapeHtml(titel)}</h3>
+
+        <div class="rezept-eigenschaften">
+          ${eigenschaftenHTML || ""}
+        </div>
+
+        ${loreText ? `<div class="rezept-lore">${escapeHtml(loreText)}</div>` : ""}
+      </div>
+
+      <div class="rezept-media">
+        ${bildPfad ? `<img src="${escapeHtml(bildPfad)}" alt="${escapeHtml(bildAlt)}" class="rezept-bild" />` : ""}
+      </div>
+    `;
+
+    container.appendChild(a);
+  }
 }
 
 // ============================================================
-// Helper: Escape + Coins
+// HELPERS: recipe ingredients / season / normalize / nutrients path
+// ============================================================
+function normalizeArray(v) {
+  if (!v) return [];
+  if (Array.isArray(v)) return v.map(String).filter(Boolean);
+  if (typeof v === "string") {
+    return v.split(",").map((s) => s.trim()).filter(Boolean);
+  }
+  return [];
+}
+
+function extractIngredientIds(recipe) {
+  // expects:
+  // recipe.inhalt.zutatenlisten[] -> { posten: [ { zutat_id: "..." }, ... ] }
+  const out = [];
+  const lists = recipe?.inhalt?.zutatenlisten;
+  if (!Array.isArray(lists)) return out;
+
+  for (const l of lists) {
+    const posten = Array.isArray(l?.posten) ? l.posten : [];
+    for (const p of posten) {
+      const zid = p?.zutat_id ? String(p.zutat_id) : "";
+      if (zid) out.push(zid);
+    }
+  }
+
+  // unique
+  return [...new Set(out)];
+}
+
+function resolveSeasonMonths(seasonId, saisonById) {
+  if (!seasonId) return [];
+  const entry = saisonById.get(String(seasonId));
+  if (!entry) return [];
+
+  // season has monate in saison.json
+  const months = Array.isArray(entry?.monate) ? entry.monate : [];
+  return months.map(Number).filter((n) => Number.isFinite(n));
+}
+
+// path helper: supports "rezepte.xxx.yyy" and plain
+function getByPath(obj, path) {
+  if (!obj || !path) return 0;
+
+  let p = String(path);
+  if (p.startsWith("rezepte.")) p = p.slice("rezepte.".length);
+
+  const parts = p.split(".");
+  let cur = obj;
+  for (const key of parts) {
+    if (cur && Object.prototype.hasOwnProperty.call(cur, key)) cur = cur[key];
+    else return 0;
+  }
+
+  const n = Number(cur);
+  return Number.isFinite(n) ? n : 0;
+}
+
+// ============================================================
+// ESCAPE + COINS
 // ============================================================
 function escapeHtml(s) {
   return String(s)
@@ -829,272 +1112,3 @@ function formatCoins(preisObj) {
 
   return parts.join(", ");
 }
-
-// ============================================================
-// Nährstoff-Ranking (UI zuerst: Badge + Console, keine Rezeptliste)
-// ============================================================
-
-let __CACHE_REZEPTE = null;
-let __CACHE_NAEHRSTOFFE = null;
-
-async function loadRezepteOnce() {
-  if (__CACHE_REZEPTE) return __CACHE_REZEPTE;
-  const res = await fetch("./daten/rezepte.json");
-  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
-  const data = await res.json();
-  __CACHE_REZEPTE = Array.isArray(data?.rezepte) ? data.rezepte : [];
-  return __CACHE_REZEPTE;
-}
-
-async function loadNaehrstoffeOnce() {
-  if (__CACHE_NAEHRSTOFFE) return __CACHE_NAEHRSTOFFE;
-  const res = await fetch("./daten/naehrstoffe.json");
-  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
-  const data = await res.json();
-  __CACHE_NAEHRSTOFFE = Array.isArray(data?.naehrstoffe)
-    ? data.naehrstoffe
-    : [];
-  return __CACHE_NAEHRSTOFFE;
-}
-
-// path helper: "rezepte.naehrwerte.pro_portion.protein_g" -> recipe.naehrwerte.pro_portion.protein_g
-function getByPath(obj, path) {
-  if (!obj || !path) return 0;
-
-  let p = String(path);
-  if (p.startsWith("rezepte.")) p = p.slice("rezepte.".length);
-
-  const parts = p.split(".");
-  let cur = obj;
-  for (const key of parts) {
-    if (cur && Object.prototype.hasOwnProperty.call(cur, key)) cur = cur[key];
-    else return 0;
-  }
-
-  const n = Number(cur);
-  return Number.isFinite(n) ? n : 0;
-}
-
-async function updateNaehrstoffRanking(selectedNutrIds) {
-  window.REZEPTE_FILTER = window.REZEPTE_FILTER || {};
-  window.REZEPTE_FILTER.naehrstoffe_selected = (selectedNutrIds || []).map(
-    String,
-  );
-
-  const ids = window.REZEPTE_FILTER.naehrstoffe_selected;
-
-  if (!ids.length) {
-    console.log("Nährstoffe: keine Auswahl -> kein Ranking");
-    return;
-  }
-
-  const [rezepte, naehrstoffe] = await Promise.all([
-    loadRezepteOnce(),
-    loadNaehrstoffeOnce(),
-  ]);
-
-  const nutrMap = new Map(naehrstoffe.map((n) => [String(n.id), n]));
-  const selected = ids.map((id) => nutrMap.get(id)).filter(Boolean);
-
-  // Max pro Nährstoff (für relativen Vergleich)
-  const maxById = new Map();
-  for (const n of selected) {
-    const q = String(n.quelle || "");
-    let max = 0;
-    for (const r of rezepte) {
-      const v = getByPath(r, q);
-      if (v > max) max = v;
-    }
-    maxById.set(String(n.id), max);
-  }
-
-  // Score pro Rezept: Summe(value/max) über gewählte Nährstoffe
-  const scored = rezepte.map((r) => {
-    let score = 0;
-    const details = {};
-    for (const n of selected) {
-      const id = String(n.id);
-      const max = Number(maxById.get(id) || 0);
-      const v = getByPath(r, n.quelle);
-      const rel = max > 0 ? v / max : 0;
-      score += rel;
-      details[id] = { v, rel };
-    }
-    return {
-      id: String(r.id || ""),
-      titel: String(r.titel || r?.meta?.title || ""),
-      score,
-      details,
-    };
-  });
-
-  scored.sort((a, b) => b.score - a.score);
-
-  console.log("Nährstoff-Ranking (relativ hoch, pro Portion):");
-  console.log(
-    "Auswahl:",
-    selected
-      .map((n) => `${n.icon || ""} ${n.label} (${n.einheit || ""})`)
-      .join(" | "),
-  );
-
-  console.log(
-    "Top 5:",
-    scored.slice(0, 5).map((x) => ({
-      id: x.id,
-      titel: x.titel,
-      score: Number(x.score.toFixed(3)),
-    })),
-  );
-}
-
-// ============================================================
-// REZEPTLISTE (Strukturierte Darstellung)
-// ============================================================
-
-let __CACHE_REZEPTE_LISTE = null;
-
-async function loadRezepteListeOnce() {
-  if (__CACHE_REZEPTE_LISTE) return __CACHE_REZEPTE_LISTE;
-
-  const res = await fetch("./daten/rezepte.json");
-  if (!res.ok) throw new Error("Rezepte konnten nicht geladen werden");
-
-  const data = await res.json();
-  __CACHE_REZEPTE_LISTE = Array.isArray(data.rezepte) ? data.rezepte : [];
-  return __CACHE_REZEPTE_LISTE;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  renderRezepteListe();
-});
-
-async function renderRezepteListe() {
-  const container = document.getElementById("rezepteListe");
-  if (!container) return;
-
-  const rezepte = await loadRezepteListeOnce();
-  const eigenschaften = await loadJson("./daten/eigenschaften.json", "eigenschaften");
-  const lore = await loadJson("./daten/lore.json", "lore");
-
-  const eigById = new Map(eigenschaften.map((e) => [String(e.id), e]));
-  const loreById = new Map(lore.map((l) => [String(l.id), l]));
-
-  container.innerHTML = "";
-
-  const erlaubteGruppen = ["Ernährung", "Allergen (enthält)", "Speise", "Verwendung"];
-
-  rezepte.forEach((r) => {
-    const titel = String(r?.titel || r?.meta?.title || "");
-    const bildPfad = String(r?.bild?.pfad || r?.bild || "");
-    const bildAlt = String(r?.bild?.alt || titel);
-
-    const eigIds = normalizeArray(r?.tags?.eigenschaften ?? r?.eigenschaften_ids);
-    const loreIds = normalizeArray(r?.tags?.lore ?? r?.lore_ids);
-
-    // Eigenschaften nach Gruppe sammeln
-    const gruppiert = {};
-    erlaubteGruppen.forEach((g) => (gruppiert[g] = []));
-
-    eigIds.forEach((id) => {
-      const obj = eigById.get(String(id));
-      if (!obj) return;
-
-      const gruppe = String(obj.gruppe || "");
-      if (erlaubteGruppen.includes(gruppe)) {
-        gruppiert[gruppe].push(obj);
-      }
-    });
-
-    // Gruppen sortieren (prio -> label)
-    erlaubteGruppen.forEach((g) => {
-      gruppiert[g].sort((a, b) => {
-        const pa = Number(a.prioritaet ?? 9999);
-        const pb = Number(b.prioritaet ?? 9999);
-        if (pa !== pb) return pa - pb;
-        return String(a.label || "").localeCompare(String(b.label || ""), "de");
-      });
-    });
-
-    const eigenschaftenHTML = erlaubteGruppen
-      .map((gruppe) => {
-        const liste = gruppiert[gruppe];
-        if (!liste.length) return "";
-
-        const chips = liste
-          .map((e) => {
-            const icon = e.icon ? `${escapeHtml(e.icon)} ` : "";
-            const label = escapeHtml(e.label || "");
-            return `<span class="tag-chip">${icon}${label}</span>`;
-          })
-          .join("");
-
-        return `
-          <div class="prop-group">
-            <div class="prop-group-title">${escapeHtml(gruppe)}</div>
-            <div class="prop-items">${chips}</div>
-          </div>
-        `;
-      })
-      .join("");
-
-    const loreText = loreIds
-      .map((id) => loreById.get(String(id))?.label || String(id))
-      .filter(Boolean)
-      .join(", ");
-
-    // ✅ Karte ist direkt ein Link (kein div + a verschachtelt)
-    const a = document.createElement("a");
-    a.className = "rezept-card";
-
-    // ID robust holen
-    const rezeptId = String(r?.id || r?.meta?.id || "");
-    a.href = rezeptId ? `./rezept.html?id=${encodeURIComponent(rezeptId)}` : "./rezept.html";
-
-    a.innerHTML = `
-      <div class="rezept-meta">
-        <h2 class="rezept-title">${escapeHtml(titel)}</h2>
-
-        <div class="rezept-eigenschaften">
-          ${eigenschaftenHTML}
-        </div>
-
-        ${loreText ? `<div class="rezept-lore">${escapeHtml(loreText)}</div>` : ""}
-      </div>
-
-      <div class="rezept-media">
-        ${
-          bildPfad
-            ? `<img src="${escapeHtml(bildPfad)}" alt="${escapeHtml(bildAlt)}" class="rezept-bild" />`
-            : ""
-        }
-      </div>
-    `;
-
-    container.appendChild(a);
-  });
-}
-
-function normalizeArray(v) {
-  if (!v) return [];
-  if (Array.isArray(v)) return v.map(String);
-  if (typeof v === "string") return v.split(",").map((s) => s.trim()).filter(Boolean);
-  return [];
-}
-
-async function loadJson(url, key) {
-  const res = await fetch(url);
-  if (!res.ok) return [];
-  const data = await res.json();
-  return Array.isArray(data?.[key]) ? data[key] : [];
-}
-
-function escapeHtml(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
