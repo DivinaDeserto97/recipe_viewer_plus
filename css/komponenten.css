@@ -774,3 +774,48 @@ body.dark .rezept-hero__img {
 #ingredientDialog .zinfo__list {
   margin: 6px 0 0 18px;
 }
+
+/* ============================================================
+   Einkaufsliste: saubere Zeilen-Layout
+============================================================ */
+
+#shoppingBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* Jede Zeile */
+#shoppingBlock .shop-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.25;
+}
+
+/* Checkbox: nicht schrumpfen */
+#shoppingBlock .shop-row input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin-top: 3px; /* optisch mittig zur ersten Textzeile */
+}
+
+/* Text: darf umbrechen */
+#shoppingBlock .shop-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Haupttext */
+#shoppingBlock .shop-main {
+  display: block;
+  word-break: break-word;
+}
+
+/* optional, falls du shop-note später wieder nutzt */
+#shoppingBlock .shop-note {
+  display: block;
+  opacity: 0.8;
+  font-size: 12px;
+  margin-top: 2px;
+}

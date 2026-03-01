@@ -189,9 +189,9 @@ function renderRezept(r, ctx) {
       <div class="card shopping" id="shoppingBox">
         <div class="headRow">
           <h2>Einkaufsliste</h2>
-          <button id="shoppingClear" class="btn-small" type="button">Alle abwählen</button>
+          <button id="shoppingDownlowd" class="btn-small" type="button">⬇️</button>
+          <button id="shoppingClear" class="btn-small" type="button">🗑️</button>
         </div>
-
         <div class="shopping" id="shoppingBlock"></div>
       </div>
     </section>
@@ -277,16 +277,52 @@ function renderRezept(r, ctx) {
     drawZutaten();
   });
 
-  // Einkaufsliste
+  // ============================================================
+  // Globale Einkaufsliste (localStorage, rezeptübergreifend)
+  // ============================================================
   const shoppingBlock = root.querySelector("#shoppingBlock");
-  shoppingBlock.innerHTML = renderShopping(einkaufsliste, ctx.zutatById);
-
   const shoppingClear = root.querySelector("#shoppingClear");
-  shoppingClear.addEventListener("click", () => {
-    shoppingBlock.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
-      cb.checked = false;
-    });
+  const shoppingDownload = root.querySelector("#shoppingDownlowd");
+
+if (shoppingDownload) {
+  shoppingDownload.addEventListener("click", () => {
+    downloadGlobalShoppingAsTxt();
   });
+}
+  const shoppingToList = root.querySelector("#shoppingToList");
+
+  // beim Laden: globale Liste anzeigen
+  renderGlobalShoppingInto(shoppingBlock);
+
+  // 🛒 klick: aktuelle Rezept-Zutaten (Portionen-skalierte Mengen) addieren
+  if (shoppingToList) {
+    shoppingToList.addEventListener("click", () => {
+      const factor = currentPortionen / basisPortionen;
+
+      const items = collectScaledItemsFromZutatenlisten(
+        zutatenlisten,
+        factor,
+        ctx.zutatById,
+      );
+
+      addItemsToGlobalShopping(items);
+      renderGlobalShoppingInto(shoppingBlock);
+    });
+  }
+
+  // "Alle an": globale Häkchen resetten
+  if (shoppingClear) {
+    shoppingClear.addEventListener("click", () => {
+      // optional: kleine Sicherheitsabfrage
+      if (!confirm("Einkaufsliste wirklich komplett löschen?")) return;
+
+      // localStorage komplett entfernen
+      localStorage.removeItem(GLOBAL_SHOPPING_KEY);
+
+      // UI neu rendern (zeigt dann 'Keine Einkaufsliste vorhanden')
+      renderGlobalShoppingInto(shoppingBlock);
+    });
+  }
 }
 
 /* ============================================================
@@ -608,21 +644,30 @@ function openIngredientInfo(z) {
   const halt = Number.isFinite(z?.lagerung?.haltbarkeit_tage)
     ? `${z.lagerung.haltbarkeit_tage} Tage`
     : "";
-  const tipps = Array.isArray(z?.lagerung?.tipps) ? z.lagerung.tipps.map(String) : [];
-  const schlecht = Array.isArray(z?.schlecht_erkennen) ? z.schlecht_erkennen.map(String) : [];
+  const tipps = Array.isArray(z?.lagerung?.tipps)
+    ? z.lagerung.tipps.map(String)
+    : [];
+  const schlecht = Array.isArray(z?.schlecht_erkennen)
+    ? z.schlecht_erkennen.map(String)
+    : [];
 
-  const saisonMonate = Array.isArray(z?.saison?.schweiz_monate) ? z.saison.schweiz_monate : [];
-  const saisonLabels = Array.isArray(z?.saison?.alternativ_labels) ? z.saison.alternativ_labels.map(String) : [];
+  const saisonMonate = Array.isArray(z?.saison?.schweiz_monate)
+    ? z.saison.schweiz_monate
+    : [];
+  const saisonLabels = Array.isArray(z?.saison?.alternativ_labels)
+    ? z.saison.alternativ_labels.map(String)
+    : [];
 
   const kcal = z?.naehrwerte_pro_100g?.kcal ?? "";
   const protein = z?.naehrwerte_pro_100g?.protein_g ?? "";
   const fett = z?.naehrwerte_pro_100g?.fett_g ?? "";
   const kh = z?.naehrwerte_pro_100g?.kh_g ?? "";
 
-  const saisonTxt =
-    saisonLabels.length
-      ? saisonLabels.join(", ")
-      : (saisonMonate.length ? `Monate: ${saisonMonate.join(", ")}` : "Ganzjährig");
+  const saisonTxt = saisonLabels.length
+    ? saisonLabels.join(", ")
+    : saisonMonate.length
+      ? `Monate: ${saisonMonate.join(", ")}`
+      : "Ganzjährig";
 
   const html = `
     <div class="zinfo">
@@ -631,19 +676,27 @@ function openIngredientInfo(z) {
       <div class="zinfo__body">
         <div class="zinfo__title">${escapeHtml(name)}</div>
 
-        ${lagerOrt || halt || tipps.length ? `
+        ${
+          lagerOrt || halt || tipps.length
+            ? `
           <div class="zinfo__sec">Lagerung</div>
           <div class="zinfo__txt">${escapeHtml(lagerOrt)}${halt ? ` • ${escapeHtml(halt)}` : ""}</div>
           ${tipps.length ? `<ul class="zinfo__list">${tipps.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul>` : ""}
-        ` : ""}
+        `
+            : ""
+        }
 
         <div class="zinfo__sec">Saison (CH)</div>
         <div class="zinfo__txt">${escapeHtml(saisonTxt)}</div>
 
-        ${schlecht.length ? `
+        ${
+          schlecht.length
+            ? `
           <div class="zinfo__sec">Schlecht erkennen</div>
           <ul class="zinfo__list">${schlecht.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul>
-        ` : ""}
+        `
+            : ""
+        }
 
         <div class="zinfo__sec">Nährwerte / 100g</div>
         <div class="zinfo__txt">Kcal: ${escapeHtml(kcal)} • Protein: ${escapeHtml(protein)}g • Fett: ${escapeHtml(fett)}g • KH: ${escapeHtml(kh)}g</div>
@@ -669,7 +722,6 @@ function openIngredientInfo(z) {
   dlg.querySelector("#ingredientDialogBody").innerHTML = html;
   dlg.showModal();
 }
-
 
 function initThemeToggle() {
   const STORAGE_KEY = "theme";
@@ -712,4 +764,205 @@ function initThemeToggle() {
       applyThemeFromStorage();
     }
   });
+}
+
+// ============================================================
+// GLOBAL SHOPPING LIST (localStorage)
+// ============================================================
+
+const GLOBAL_SHOPPING_KEY = "recipe_global_shopping_v1";
+
+function loadGlobalShopping() {
+  try {
+    const raw = localStorage.getItem(GLOBAL_SHOPPING_KEY);
+    const data = raw ? JSON.parse(raw) : null;
+    if (!data || typeof data !== "object") return { items: {} };
+    if (!data.items || typeof data.items !== "object") data.items = {};
+    return data;
+  } catch {
+    return { items: {} };
+  }
+}
+
+function saveGlobalShopping(data) {
+  localStorage.setItem(GLOBAL_SHOPPING_KEY, JSON.stringify(data));
+}
+
+function makeShopKey(zutatId, unit) {
+  return `${String(zutatId)}|${String(unit || "")
+    .trim()
+    .toLowerCase()}`;
+}
+
+// Zutatenlisten -> Items (Portionen skaliert)
+function collectScaledItemsFromZutatenlisten(zutatenlisten, factor, zutatById) {
+  const out = [];
+  const lists = Array.isArray(zutatenlisten) ? zutatenlisten : [];
+
+  for (const zl of lists) {
+    const posten = Array.isArray(zl?.posten) ? zl.posten : [];
+    for (const p of posten) {
+      const zId = String(p?.zutat_id || "").trim();
+      if (!zId) continue;
+
+      const name = zutatById.get(zId)?.name || zId;
+      const unit = String(p?.einheit || "").trim();
+
+      const n = Number(p?.menge);
+      if (!Number.isFinite(n)) continue; // erstmal nur numerische Mengen
+
+      out.push({
+        zutat_id: zId,
+        name,
+        unit,
+        amount: Math.round(n * factor * 100) / 100,
+      });
+    }
+  }
+
+  return out;
+}
+
+function addItemsToGlobalShopping(items) {
+  const data = loadGlobalShopping();
+
+  for (const it of items) {
+    const key = makeShopKey(it.zutat_id, it.unit);
+
+    if (!data.items[key]) {
+      data.items[key] = {
+        zutat_id: it.zutat_id,
+        name: it.name,
+        unit: it.unit || "",
+        amount: 0,
+        checked: false,
+      };
+    }
+
+    const cur = data.items[key];
+    cur.name = it.name || cur.name;
+    cur.unit = it.unit || cur.unit;
+
+    cur.amount =
+      Math.round((Number(cur.amount || 0) + Number(it.amount || 0)) * 100) /
+      100;
+  }
+
+  saveGlobalShopping(data);
+}
+
+function renderGlobalShoppingInto(container) {
+  const data = loadGlobalShopping();
+  const keys = Object.keys(data.items);
+
+  if (!keys.length) {
+    container.innerHTML = `<div class="muted">Keine Einkaufsliste vorhanden.</div>`;
+    return;
+  }
+
+  const items = keys
+    .map((k) => ({ key: k, ...data.items[k] }))
+    .sort((a, b) => String(a.name).localeCompare(String(b.name), "de"));
+
+  // "Alle" ist checked, wenn wirklich alle Items checked sind
+  const allChecked = items.length > 0 && items.every((it) => !!it.checked);
+
+  // 1) HTML bauen: zuerst "Alle", dann Items
+  container.innerHTML =
+    `
+    <label class="shop-row shop-row--all">
+      <input type="checkbox" data-gshop-all="1" ${allChecked ? "checked" : ""}>
+      <span class="shop-text">
+        <span class="shop-main">Alle</span>
+      </span>
+    </label>
+    <div class="shop-sep"></div>
+    ` +
+    items
+      .map((it) => {
+        const left = `${formatNumber(Number(it.amount))} ${it.unit}`.trim();
+
+        return `
+          <label class="shop-row">
+            <input type="checkbox" data-gshop-key="${escapeHtml(it.key)}" ${it.checked ? "checked" : ""}>
+            <span class="shop-text">
+              <span class="shop-main">${escapeHtml(left ? left + " " : "")}${escapeHtml(it.name)}</span>
+            </span>
+          </label>
+        `;
+      })
+      .join("");
+
+  // 2) Bind: "Alle" toggelt alles
+  const allCb = container.querySelector(
+    'input[type="checkbox"][data-gshop-all="1"]',
+  );
+  if (allCb) {
+    allCb.addEventListener("change", () => {
+      const d = loadGlobalShopping();
+      const want = !!allCb.checked;
+
+      Object.keys(d.items).forEach((k) => {
+        d.items[k].checked = want;
+      });
+
+      saveGlobalShopping(d);
+      renderGlobalShoppingInto(container);
+    });
+  }
+
+  // 3) Bind: einzelne Checkboxen speichern + "Alle" aktualisieren
+  container
+    .querySelectorAll('input[type="checkbox"][data-gshop-key]')
+    .forEach((cb) => {
+      cb.addEventListener("change", () => {
+        const key = String(cb.dataset.gshopKey || "");
+        const d = loadGlobalShopping();
+        if (d.items[key]) {
+          d.items[key].checked = !!cb.checked;
+          saveGlobalShopping(d);
+          renderGlobalShoppingInto(container);
+        }
+      });
+    });
+}
+
+function downloadGlobalShoppingAsTxt() {
+  const data = loadGlobalShopping();
+  const keys = Object.keys(data.items);
+
+  if (!keys.length) {
+    alert("Einkaufsliste ist leer.");
+    return;
+  }
+
+  const items = keys
+    .map((k) => data.items[k])
+    .sort((a, b) => String(a.name).localeCompare(String(b.name), "de"));
+
+  const lines = [];
+  lines.push("EINKAUFSLISTE");
+  lines.push("====================");
+  lines.push("");
+
+  for (const it of items) {
+    const amount = formatNumber(Number(it.amount));
+    const left = `${amount} ${it.unit}`.trim();
+    const prefix = it.checked ? "[x]" : "[ ]";
+    lines.push(`${prefix} ${left} ${it.name}`.trim());
+  }
+
+  const text = lines.join("\n");
+
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "einkaufsliste.txt";
+  document.body.appendChild(a);
+  a.click();
+
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
