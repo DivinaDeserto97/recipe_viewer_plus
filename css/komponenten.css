@@ -1,11 +1,39 @@
-/* Inputs (allgemein) */
+/* ============================================================
+   komponenten.css (bereinigt & stabil)
+   - keine doppelten Klassen
+   - .rezept-title sauber gescoped (Startseite vs Rezeptseite)
+   - Dropdown + 3-State Zutaten UI bleibt wie bei dir
+   - Rezeptliste Cards sauber ausgerichtet
+   - Rezeptseite: Ziel-Skizze als Grid-Layout (Hero / Anleitung / Zutaten / Einkauf / Lore)
+============================================================ */
+
+
+/* ============================================================
+   INPUTS / BUTTONS (allgemein)
+============================================================ */
+
 input,
 select,
 button {
   font: inherit;
 }
 
-/* Text Input */
+.btn {
+  padding: var(--space-1) var(--space-2);
+  border: none;
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Text Input (Suche) */
 .search input {
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
@@ -28,23 +56,7 @@ button {
   align-items: center;
 }
 
-/* Button Style */
-.btn {
-  padding: var(--space-1) var(--space-2);
-  border: none;
-  cursor: pointer;
-  background: var(--accent);
-  color: white;
-  font-size: 13px;
-  border-radius: var(--radius-sm);
-}
-
-.btn:focus {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-/* ===== Select (besserer Style) ===== */
+/* Select */
 .select {
   padding: var(--space-1) calc(var(--space-2) + 18px) var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
@@ -53,7 +65,6 @@ button {
   color: var(--input-text);
   cursor: pointer;
 
-  /* eigener Pfeil */
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -80,7 +91,7 @@ button {
   border-color: var(--accent);
 }
 
-/* Toggle Button (B1) */
+/* Theme Toggle Button (Header) */
 .toggle {
   margin-left: auto;
   padding: var(--space-1) var(--space-2);
@@ -97,7 +108,10 @@ button {
   box-shadow: var(--focus-ring);
 }
 
-/* ===== Bootstrap-ähnliches Dropdown (ohne Bootstrap) ===== */
+
+/* ============================================================
+   DROPDOWN (ohne Bootstrap)
+============================================================ */
 
 .dropdown {
   position: relative;
@@ -170,7 +184,7 @@ button {
 }
 
 .dropdown-menu__title {
-  font-weight: bold;
+  font-weight: 800;
 }
 
 .dropdown-menu__clear {
@@ -201,7 +215,7 @@ body.dark .dropdown-menu__clear:hover {
   margin: 0 0 6px;
 }
 
-/* Item wie Bootstrap dropdown-item, aber mit Checkbox */
+/* Item + Checkbox */
 .dropdown-item {
   display: flex;
   align-items: center;
@@ -245,9 +259,10 @@ body.dark .dropdown-item:hover {
   line-height: 1;
 }
 
+
 /* ============================================================
-   Zutaten Dropdown: 3-State UI (klarer aktiv/inaktiv)
-   ============================================================ */
+   Zutaten Dropdown: 3-State UI
+============================================================ */
 
 .dropdown-item--ingredient {
   display: flex;
@@ -256,11 +271,11 @@ body.dark .dropdown-item:hover {
 }
 
 .dropdown-item--ingredient .dropdown-item__text {
-  font-weight: 600;
+  font-weight: 700;
   min-width: 120px;
 }
 
-/* Info Button (links) */
+/* Info Button */
 .ingredient-info-btn {
   width: 36px;
   height: 32px;
@@ -280,14 +295,13 @@ body.dark .dropdown-item:hover {
   border-color: var(--accent);
 }
 
-/* 3-State Buttons rechts */
+/* 3-State Buttons */
 .ingredient-state-controls {
   margin-left: auto;
   display: inline-flex;
   gap: 6px;
 }
 
-/* Basis: inaktiv = bewusst "blass" */
 .ingredient-state-btn {
   width: 44px;
   height: 32px;
@@ -303,6 +317,7 @@ body.dark .dropdown-item:hover {
 
   opacity: 0.45;
   filter: grayscale(0.25);
+  transition: opacity 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
 }
 
 .ingredient-state-btn:hover {
@@ -315,7 +330,7 @@ body.dark .dropdown-item:hover {
   border-color: var(--accent);
 }
 
-/* Aktiv: sehr klar */
+/* aktiv */
 .ingredient-state-btn[data-active="1"] {
   opacity: 1;
   filter: none;
@@ -323,20 +338,19 @@ body.dark .dropdown-item:hover {
   box-shadow: 0 0 0 3px rgba(44, 122, 123, 0.18);
 }
 
-/* Aktiv: zusätzlich pro Zustand leicht unterscheiden */
 .ingredient-state-btn[data-state="need"][data-active="1"] {
-  background: rgba(255, 215, 0, 0.22); /* gelblich */
+  background: rgba(255, 215, 0, 0.22);
 }
 
 .ingredient-state-btn[data-state="have"][data-active="1"] {
-  background: rgba(0, 180, 0, 0.16); /* grünlich */
+  background: rgba(0, 180, 0, 0.16);
 }
 
 .ingredient-state-btn[data-state="nohave"][data-active="1"] {
-  background: rgba(220, 0, 0, 0.14); /* rötlich */
+  background: rgba(220, 0, 0, 0.14);
 }
 
-/* Optional: ganze Zeile leicht markieren (dezent) */
+/* Zeile leicht markieren */
 .dropdown-item--ingredient:has(.ingredient-state-btn[data-active="1"][data-state="need"]) {
   background: rgba(255, 215, 0, 0.08);
 }
@@ -349,15 +363,39 @@ body.dark .dropdown-item:hover {
   background: rgba(220, 0, 0, 0.06);
 }
 
+
 /* ============================================================
-   REZEPT CARD – kompakter & sauber ausgerichtet
+   TAG-CHIPS (einmal definiert – überall gleich)
 ============================================================ */
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+body.dark .tag-chip {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* ============================================================
+   REZEPTLISTE (Startseite) – Card Layout
+============================================================ */
+
+.rezepte-liste {
+  display: grid;
+  gap: 12px;
+}
 
 .rezept-card {
   display: grid;
   grid-template-columns: 1fr 160px;
-  align-items: start; /* <-- wichtig! */
-
+  align-items: start;
   gap: 14px;
 
   background: var(--bg, #fff);
@@ -374,97 +412,270 @@ body.dark .dropdown-item:hover {
   box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
 
-
-/* ============================================================
-   LINKER TEXTBEREICH
-============================================================ */
-
 .rezept-meta {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;          /* kleiner Abstand */
+  gap: 6px;
 }
 
-.rezept-title {
+/* Startseite Titel */
+.rezept-card .rezept-title {
   font-size: 1.35rem;
-  font-weight: 800;
-  line-height: 1.05; /* kompakter */
+  font-weight: 900;
+  line-height: 1.05;
   margin: 0;
 }
 
-
-/* ============================================================
-   EIGENSCHAFTEN – Stöberhilfe kompakt
-============================================================ */
-
 .rezept-eigenschaften {
   font-size: 0.82rem;
-  opacity: 0.8;
+  opacity: 0.85;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 6px;      /* weniger Luft */
-  margin-top: 2px;
+  gap: 6px 8px;
 }
 
-.tag-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 7px;  /* kleiner */
-  border-radius: 999px;
-  font-size: 0.75rem;
-  background: rgba(0,0,0,0.06);
+.prop-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
+.prop-group-title {
+  font-weight: 800;
+  opacity: 0.85;
+  font-size: 0.95rem;
+}
 
-/* ============================================================
-   LORE
-============================================================ */
+.prop-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 .rezept-lore {
-  font-size: 0.8rem;
-  opacity: 0.6;
+  font-size: 0.82rem;
+  opacity: 0.65;
   font-style: italic;
   margin-top: 2px;
 }
-
-
-/* ============================================================
-   BILD RECHTS
-============================================================ */
 
 .rezept-media {
   width: 160px;
   display: flex;
   justify-content: flex-end;
-  align-items: flex-start; /* oben ausgerichtet */
+  align-items: flex-start;
 }
 
 .rezept-bild {
   width: 160px;
-  height: 110px;     /* minimal kleiner */
+  height: 110px;
   object-fit: cover;
   border-radius: 12px;
   display: block;
 }
 
-
-/* ============================================================
-   MOBILE
-============================================================ */
-
+/* Mobile: Bild oben */
 @media (max-width: 680px) {
   .rezept-card {
     grid-template-columns: 1fr;
   }
-
   .rezept-media {
     width: 100%;
   }
-
   .rezept-bild {
     width: 100%;
     height: 180px;
+  }
+}
+
+
+/* ============================================================
+   rezept.html – Topbar Buttons (Zurück / Theme)
+============================================================ */
+
+.topbar,
+.rezept-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  gap: 12px;
+}
+
+.btn-back,
+.btn-theme {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, rgba(0,0,0,0.12));
+  background: var(--bg, #fff);
+  color: inherit;
+  text-decoration: none;
+}
+
+.btn-theme {
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   rezept.html – Ziel-Skizze Layout (Grid Areas)
+   hero: Bild + Eigenschaften
+   anleitung: groß links
+   zutaten: mitte oben
+   einkauf: mitte unten
+   lore: rechts
+============================================================ */
+
+.rezept-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.rezept-root {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hauptgrid */
+.rezept-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.95fr 0.85fr;
+  grid-template-areas:
+    "hero hero lore"
+    "anleitung zutaten lore"
+    "anleitung einkauf lore";
+  gap: 14px;
+  align-items: start;
+}
+
+/* gemeinsame Panel Optik */
+.rezept-panel,
+.rezept-block {
+  background: var(--bg, #fff);
+  border: 1px solid var(--border-color, rgba(0,0,0,0.12));
+  border-radius: 14px;
+  padding: 14px;
+}
+
+/* HERO */
+.rezept-hero {
+  grid-area: hero;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.rezept-hero__img {
+  width: 220px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+body.dark .rezept-hero__img {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Rezeptseite Titel (scoped!) */
+.rezept-page .rezept-title,
+.rezept-hero__title {
+  font-size: 2rem;
+  font-weight: 950;
+  line-height: 1.1;
+  margin: 0 0 10px 0;
+}
+
+.rezept-hero__props {
+  display: grid;
+  gap: 10px;
+}
+
+/* Bereiche */
+.rezept-anleitung { grid-area: anleitung; }
+.rezept-zutaten   { grid-area: zutaten; }
+.rezept-einkauf   { grid-area: einkauf; }
+.rezept-lore      { grid-area: lore; }
+
+.panel-title,
+.rezept-h2,
+.rezept-lore__title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin: 0 0 10px 0;
+}
+
+/* Lore Text */
+.rezept-lore__text,
+.rezept-story {
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.rezept-lore__text {
+  font-style: italic;
+  opacity: 0.75;
+}
+
+/* Listen */
+.rezept-list,
+.rezept-steps {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.rezept-list--check {
+  padding-left: 0;
+  list-style: none;
+}
+
+.checkrow {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.rezept-muted {
+  opacity: 0.7;
+}
+
+.rezept-empty {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.rezept-error {
+  border: 1px solid rgba(200, 0, 0, 0.25);
+  background: rgba(200, 0, 0, 0.05);
+  padding: 14px;
+  border-radius: 14px;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .rezept-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "hero"
+      "lore"
+      "zutaten"
+      "einkauf"
+      "anleitung";
+  }
+
+  .rezept-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .rezept-hero__img {
+    width: 100%;
+    height: 220px;
   }
 }
