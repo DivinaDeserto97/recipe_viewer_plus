@@ -3,21 +3,37 @@
     {
       "id": "aceto_balsamico",
       "name": "Aceto Balsamico",
-      "bilder": { "pfad": "img/zutaten/aceto_balsamico.png", "alt": "Aceto Balsamico" },
+      "bilder": {
+        "pfad": "img/zutaten/aceto_balsamico.png",
+        "alt": "Aceto Balsamico"
+      },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
-      "eigenschaften_ids": ["prop_enthaelt_sulfite", "prop_trigger_sulfite_histamin"]
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
+      "eigenschaften_ids": [
+        "prop_enthaelt_sulfite",
+        "prop_trigger_sulfite_histamin"
+      ]
     },
     {
       "id": "ei",
       "name": "Ei",
       "bilder": { "pfad": "img/zutaten/ei.png", "alt": "Ei" },
       "lagerung": { "ort": "Kühlschrank", "haltbarkeit_tage": 21, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Ganzjährig"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Ganzjährig"] },
       "schlecht_erkennen": ["Schwefeliger Geruch", "Ungewöhnliche Verfärbung"],
-      "naehrwerte_pro_100g": { "kcal": 143, "protein_g": 13, "fett_g": 10, "kh_g": 1.1 },
+      "naehrwerte_pro_100g": {
+        "kcal": 143,
+        "protein_g": 13,
+        "fett_g": 10,
+        "kh_g": 1.1
+      },
       "eigenschaften_ids": ["prop_enthaelt_ei"]
     },
     {
@@ -25,9 +41,14 @@
       "name": "Eiswürfel",
       "bilder": { "pfad": "img/zutaten/eiswuerfel.png", "alt": "Eiswürfel" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": []
     },
     {
@@ -35,29 +56,54 @@
       "name": "Honig",
       "bilder": { "pfad": "img/zutaten/honig.png", "alt": "Honig" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
-      "eigenschaften_ids": ["prop_trigger_honig", "prop_trigger_fruktose", "prop_trigger_zucker_suess"]
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
+      "eigenschaften_ids": [
+        "prop_trigger_honig",
+        "prop_trigger_fruktose",
+        "prop_trigger_zucker_suess"
+      ]
     },
     {
       "id": "kartoffel_festkochend",
       "name": "Kartoffeln (festkochend)",
-      "bilder": { "pfad": "img/zutaten/kartoffel_festkochend.png", "alt": "Kartoffeln (festkochend)" },
+      "bilder": {
+        "pfad": "img/zutaten/kartoffel_festkochend.png",
+        "alt": "Kartoffeln (festkochend)"
+      },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_kartoffel"]
     },
     {
       "id": "mango_eiswuerfel",
       "name": "Mango-Eiswürfel",
-      "bilder": { "pfad": "img/zutaten/mango_eiswuerfel.png", "alt": "Mango-Eiswürfel" },
+      "bilder": {
+        "pfad": "img/zutaten/mango_eiswuerfel.png",
+        "alt": "Mango-Eiswürfel"
+      },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_mango", "prop_trigger_fruktose"]
     },
     {
@@ -65,19 +111,36 @@
       "name": "Mango-Sirup",
       "bilder": { "pfad": "img/zutaten/mango_sirup.png", "alt": "Mango-Sirup" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
-      "eigenschaften_ids": ["prop_trigger_mango", "prop_trigger_fruktose", "prop_trigger_zucker_suess"]
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
+      "eigenschaften_ids": [
+        "prop_trigger_mango",
+        "prop_trigger_fruktose",
+        "prop_trigger_zucker_suess"
+      ]
     },
     {
       "id": "mineralwasser_mit_kohlensaeure",
       "name": "Mineralwasser (mit Kohlensäure)",
-      "bilder": { "pfad": "img/zutaten/mineralwasser_mit_kohlensaeure.png", "alt": "Mineralwasser (mit Kohlensäure)" },
+      "bilder": {
+        "pfad": "img/zutaten/mineralwasser_mit_kohlensaeure.png",
+        "alt": "Mineralwasser (mit Kohlensäure)"
+      },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_kohlensaeure"]
     },
     {
@@ -85,29 +148,50 @@
       "name": "Orangensaft",
       "bilder": { "pfad": "img/zutaten/orangensaft.png", "alt": "Orangensaft" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_zitrus", "prop_trigger_fruktose"]
     },
     {
       "id": "orangenscheibe",
       "name": "Orangenscheibe",
-      "bilder": { "pfad": "img/zutaten/orangenscheibe.png", "alt": "Orangenscheibe" },
+      "bilder": {
+        "pfad": "img/zutaten/orangenscheibe.png",
+        "alt": "Orangenscheibe"
+      },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_zitrus"]
     },
     {
       "id": "orangenzeste",
       "name": "Orangenzeste",
-      "bilder": { "pfad": "img/zutaten/orangenzeste.png", "alt": "Orangenzeste" },
+      "bilder": {
+        "pfad": "img/zutaten/orangenzeste.png",
+        "alt": "Orangenzeste"
+      },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_zitrus"]
     },
     {
@@ -115,9 +199,14 @@
       "name": "Pfeffer",
       "bilder": { "pfad": "img/zutaten/pfeffer.png", "alt": "Pfeffer" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_scharf"]
     },
     {
@@ -125,9 +214,14 @@
       "name": "Radiesli",
       "bilder": { "pfad": "img/zutaten/radiesli.png", "alt": "Radiesli" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_radiesli"]
     },
     {
@@ -135,19 +229,40 @@
       "name": "Rapsöl",
       "bilder": { "pfad": "img/zutaten/rapsoel.png", "alt": "Rapsöl" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_raps"]
     },
     {
       "id": "salatgurke",
       "name": "Salatgurke",
       "bilder": { "pfad": "img/zutaten/salatgurke.png", "alt": "Salatgurke" },
-      "lagerung": { "ort": "Kühlschrank (Gemüsefach)", "haltbarkeit_tage": 5, "tipps": ["Nicht neben Äpfeln lagern (kann schneller altern)."] },
-      "saison": { "schweiz_monate": [5, 6, 7, 8, 9], "alternativ_labels": ["Sommer"] },
-      "schlecht_erkennen": ["Schleimige Oberfläche", "Weiche Stellen", "Starker Geruch"],
-      "naehrwerte_pro_100g": { "kcal": 12, "protein_g": 0.7, "fett_g": 0.1, "kh_g": 1.8 },
+      "lagerung": {
+        "ort": "Kühlschrank (Gemüsefach)",
+        "haltbarkeit_tage": 5,
+        "tipps": ["Nicht neben Äpfeln lagern (kann schneller altern)."]
+      },
+      "saison": {
+        "schweiz_monate": [5, 6, 7, 8, 9],
+        "alternativ_labels": ["Sommer"]
+      },
+      "schlecht_erkennen": [
+        "Schleimige Oberfläche",
+        "Weiche Stellen",
+        "Starker Geruch"
+      ],
+      "naehrwerte_pro_100g": {
+        "kcal": 12,
+        "protein_g": 0.7,
+        "fett_g": 0.1,
+        "kh_g": 1.8
+      },
       "eigenschaften_ids": ["prop_trigger_gurke"]
     },
     {
@@ -155,9 +270,14 @@
       "name": "Salz",
       "bilder": { "pfad": "img/zutaten/salz.png", "alt": "Salz" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": []
     },
     {
@@ -165,19 +285,32 @@
       "name": "Senf",
       "bilder": { "pfad": "img/zutaten/senf.png", "alt": "Senf" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_enthaelt_senf"]
     },
     {
       "id": "sonnenblumenkerne",
       "name": "Sonnenblumenkerne",
-      "bilder": { "pfad": "img/zutaten/sonnenblumenkerne.png", "alt": "Sonnenblumenkerne" },
+      "bilder": {
+        "pfad": "img/zutaten/sonnenblumenkerne.png",
+        "alt": "Sonnenblumenkerne"
+      },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_sonnenblumenkerne"]
     },
     {
@@ -185,19 +318,36 @@
       "name": "Tonic Water",
       "bilder": { "pfad": "img/zutaten/tonic_water.png", "alt": "Tonic Water" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
-      "eigenschaften_ids": ["prop_trigger_kohlensaeure", "prop_trigger_chinin", "prop_trigger_zucker_suess"]
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
+      "eigenschaften_ids": [
+        "prop_trigger_kohlensaeure",
+        "prop_trigger_chinin",
+        "prop_trigger_zucker_suess"
+      ]
     },
     {
       "id": "weisse_zwiebel",
       "name": "Weisse Zwiebel",
-      "bilder": { "pfad": "img/zutaten/weisse_zwiebel.png", "alt": "Weisse Zwiebel" },
+      "bilder": {
+        "pfad": "img/zutaten/weisse_zwiebel.png",
+        "alt": "Weisse Zwiebel"
+      },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_zwiebel"]
     },
     {
@@ -205,19 +355,32 @@
       "name": "Zitrone",
       "bilder": { "pfad": "img/zutaten/zitrone.png", "alt": "Zitrone" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_zitrus"]
     },
     {
       "id": "zitronensaft",
       "name": "Zitronensaft",
-      "bilder": { "pfad": "img/zutaten/zitronensaft.png", "alt": "Zitronensaft" },
+      "bilder": {
+        "pfad": "img/zutaten/zitronensaft.png",
+        "alt": "Zitronensaft"
+      },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_zitrus"]
     },
     {
@@ -225,9 +388,14 @@
       "name": "Zucker",
       "bilder": { "pfad": "img/zutaten/zucker.png", "alt": "Zucker" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
-      "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
+      "saison": { "schweiz_monate": ["ganzjährig"], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],
-      "naehrwerte_pro_100g": { "kcal": null, "protein_g": null, "fett_g": null, "kh_g": null },
+      "naehrwerte_pro_100g": {
+        "kcal": null,
+        "protein_g": null,
+        "fett_g": null,
+        "kh_g": null
+      },
       "eigenschaften_ids": ["prop_trigger_zucker_suess"]
     }
   ]

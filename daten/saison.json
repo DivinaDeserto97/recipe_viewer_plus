@@ -4,6 +4,7 @@
     { "id": "saison_sommer", "label": "Sommer", "monate": [6,7,8] },
     { "id": "saison_herbst", "label": "Herbst", "monate": [9,10,11] },
     { "id": "saison_winter", "label": "Winter", "monate": [12,1,2] },
+    { "id": "ganzjährig", "label": "Ganzjährig", "monate": [1,2,3,4,5,6,7,8,9,10,11,12] },
 
     { "id": "monat_januar", "label": "Januar", "monate": [1] },
     { "id": "monat_februar", "label": "Februar", "monate": [2] },

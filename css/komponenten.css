@@ -679,3 +679,9 @@ body.dark .rezept-hero__img {
     height: 220px;
   }
 }
+
+/* Zutaten-Dropdown: Menü an rechten Rand ausrichten (5px Abstand zum Viewport) */
+#zutatenDropdown .dropdown-menu {
+  left: auto;
+  right: 5px;
+}
