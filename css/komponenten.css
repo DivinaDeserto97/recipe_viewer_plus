@@ -685,3 +685,92 @@ body.dark .rezept-hero__img {
   left: auto;
   right: 5px;
 }
+/* ============================================================
+   Ingredient Info Popup (dialog#ingredientDialog)
+   - mittig
+   - reagiert auf body.dark (via CSS-Variablen)
+   - Bilder fixe Grösse
+============================================================ */
+
+#ingredientDialog {
+  /* dialog ist per showModal() sowieso top-layer – wir sorgen für saubere Optik */
+  margin: auto;                 /* wirklich mittig */
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  padding: 0;                   /* Padding kommt über form */
+  background: var(--input-bg);
+  color: var(--input-text);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+
+  width: min(720px, calc(100vw - 24px));
+  max-height: min(80vh, calc(100vh - 24px));
+  overflow: auto;
+}
+
+#ingredientDialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* Inhalt-Padding (Startseite hat kein .zdlg, Rezept hat .zdlg) */
+#ingredientDialog form {
+  padding: 14px;
+}
+
+/* Close-Footer aus rezept.js hübsch */
+#ingredientDialog .zdlg__foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+/* Close Button */
+#ingredientDialog button[type="submit"] {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+  cursor: pointer;
+}
+#ingredientDialog button[type="submit"]:focus {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-color: var(--accent);
+}
+
+/* ===== Bilder: fixe Grösse (gilt für Rezept-Popup + Startseiten-Popup) ===== */
+#ingredientDialog img,
+#ingredientDialog .zinfo__img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;            /* oder: contain, wenn du nie croppen willst */
+  border-radius: 12px;
+  display: block;
+}
+
+/* Rezept-Popup (zinfo) Layout sauber */
+#ingredientDialog .zinfo {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+#ingredientDialog .zinfo__title {
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+#ingredientDialog .zinfo__sec {
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+#ingredientDialog .zinfo__txt {
+  opacity: 0.95;
+}
+
+#ingredientDialog .zinfo__list {
+  margin: 6px 0 0 18px;
+}
