@@ -1,54 +1,4 @@
 {
-  "eigenschaften_additions": [
-    {
-      "id": "prop_trigger_mango",
-      "label": "Mango (sensibel)",
-      "gruppe": "Unverträglichkeit / Trigger",
-      "untergruppe": "Spezialfälle",
-      "icon": "🥭",
-      "prioritaet": 15
-    },
-    {
-      "id": "prop_trigger_honig",
-      "label": "Honig (sensibel)",
-      "gruppe": "Unverträglichkeit / Trigger",
-      "untergruppe": "Spezialfälle",
-      "icon": "🍯",
-      "prioritaet": 16
-    },
-    {
-      "id": "prop_trigger_raps",
-      "label": "Raps (sensibel)",
-      "gruppe": "Unverträglichkeit / Trigger",
-      "untergruppe": "Spezialfälle",
-      "icon": "🌼",
-      "prioritaet": 17
-    },
-    {
-      "id": "prop_trigger_sonnenblumenkerne",
-      "label": "Sonnenblumenkerne (sensibel)",
-      "gruppe": "Unverträglichkeit / Trigger",
-      "untergruppe": "Spezialfälle",
-      "icon": "🌻",
-      "prioritaet": 18
-    },
-    {
-      "id": "prop_trigger_kartoffel",
-      "label": "Kartoffel (sensibel)",
-      "gruppe": "Unverträglichkeit / Trigger",
-      "untergruppe": "Spezialfälle",
-      "icon": "🥔",
-      "prioritaet": 19
-    },
-    {
-      "id": "prop_trigger_radiesli",
-      "label": "Radiesli (sensibel)",
-      "gruppe": "Unverträglichkeit / Trigger",
-      "untergruppe": "Spezialfälle",
-      "icon": "🌶️",
-      "prioritaet": 21
-    }
-  ],
   "zutaten": [
     {
       "id": "aceto_balsamico",
@@ -131,9 +81,9 @@
       "eigenschaften_ids": ["prop_trigger_kohlensaeure"]
     },
     {
-      "id": "orangensaft_oder_maracuja",
-      "name": "Orangensaft oder Maracuja-Saft",
-      "bilder": { "pfad": "img/zutaten/orangensaft_oder_maracuja.png", "alt": "Orangensaft oder Maracuja-Saft" },
+      "id": "orangensaft",
+      "name": "Orangensaft",
+      "bilder": { "pfad": "img/zutaten/orangensaft.png", "alt": "Orangensaft" },
       "lagerung": { "ort": "", "haltbarkeit_tage": null, "tipps": [] },
       "saison": { "schweiz_monate": [], "alternativ_labels": ["Unbekannt"] },
       "schlecht_erkennen": [],

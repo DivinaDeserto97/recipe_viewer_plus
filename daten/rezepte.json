@@ -346,7 +346,7 @@
                 "einheit": "ml"
               },
               {
-                "zutat_id": "orangensaft_oder_maracuja",
+                "zutat_id": "orangensaft",
                 "menge": 100.0,
                 "einheit": "ml"
               },
@@ -458,7 +458,7 @@
             "gruppe": "Getränke",
             "posten": [
               "mineralwasser_mit_kohlensaeure",
-              "orangensaft_oder_maracuja"
+              "orangensaft"
             ]
           },
           {
@@ -489,7 +489,7 @@
       "sprache": "de-CH",
       "titel": "Flüssiges Glühwürmchenlicht",
       "bild": {
-        "pfad": "bilder/rezepte/PLACEHOLDER.png",
+        "pfad": "img/rezepte/Flüssiges Glühwürmchenlicht.png",
         "alt": "Flüssiges Glühwürmchenlicht (Mango-Tonic-Drink)"
       },
       "basis_portionen": 1,
@@ -544,7 +544,7 @@
                 "einheit": "ml"
               },
               {
-                "zutat_id": "orangensaft_oder_maracuja",
+                "zutat_id": "orangensaft",
                 "menge": 100.0,
                 "einheit": "ml"
               },
@@ -557,7 +557,7 @@
               },
               {
                 "zutat_id": "eiswuerfel",
-                "menge": null,
+                "menge": 1,
                 "einheit": "",
                 "hinweis": "nach Geschmack"
               }
@@ -570,7 +570,7 @@
             "posten": [
               {
                 "zutat_id": "orangenzeste",
-                "menge": null,
+                "menge": 1,
                 "einheit": "",
                 "zubereitung": "Garnitur"
               }
@@ -651,7 +651,7 @@
             "gruppe": "Getränke",
             "posten": [
               "tonic_water",
-              "orangensaft_oder_maracuja"
+              "orangensaft"
             ]
           },
           {
