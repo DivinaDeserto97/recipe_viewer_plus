@@ -203,13 +203,55 @@ document.addEventListener("DOMContentLoaded", async () => {
 // THEME TOGGLE
 // ============================================================
 function initThemeToggle() {
+  const STORAGE_KEY = "theme"; // "dark" | "light"
   const toggle = document.getElementById("themeToggle");
-  if (!toggle) return;
 
-  toggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    toggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+  // --- (B) Diese Funktion liest IMMER aus localStorage und setzt die Seite ---
+  function applyThemeFromStorage() {
+    const v = localStorage.getItem(STORAGE_KEY);
+    const theme = v === "dark" || v === "light" ? v : "light";
+
+    // WICHTIG: wir bleiben bei body.dark (damit dein CSS unverändert bleibt)
+    document.body.classList.toggle("dark", theme === "dark");
+
+    // Icon updaten (falls Button existiert)
+    if (toggle) {
+      toggle.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
+  }
+
+  // --- Initial: sofort anwenden ---
+  applyThemeFromStorage();
+
+  // Wenn es auf dieser Seite keinen Button gibt: trotzdem Sync aktivieren
+  if (toggle) {
+    // Doppel-Binding verhindern (wichtig bei rezept.js, weil du neu renderst)
+    if (toggle.dataset.bound === "1") return;
+    toggle.dataset.bound = "1";
+
+    // --- (A) Klick ändert NUR localStorage, dann apply im aktuellen Tab ---
+    toggle.addEventListener("click", () => {
+      const cur = localStorage.getItem(STORAGE_KEY);
+      const theme = cur === "dark" ? "light" : "dark";
+      localStorage.setItem(STORAGE_KEY, theme);
+      applyThemeFromStorage(); // sofort im aktuellen Tab
+    });
+  }
+
+  // --- Cross-Tab Sync: andere Tabs bekommen storage-event ---
+  window.addEventListener("storage", (e) => {
+    if (e.key === STORAGE_KEY) applyThemeFromStorage();
   });
+
+  // --- “immer wieder abfragen”: Polling (falls du es explizit so willst) ---
+  let last = localStorage.getItem(STORAGE_KEY);
+  setInterval(() => {
+    const now = localStorage.getItem(STORAGE_KEY);
+    if (now !== last) {
+      last = now;
+      applyThemeFromStorage();
+    }
+  }, 250);
 }
 
 // ============================================================

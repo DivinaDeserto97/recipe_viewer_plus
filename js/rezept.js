@@ -672,18 +672,44 @@ function openIngredientInfo(z) {
 
 
 function initThemeToggle() {
+  const STORAGE_KEY = "theme";
   const toggle = document.getElementById("themeToggle");
+
+  function applyThemeFromStorage() {
+    const v = localStorage.getItem(STORAGE_KEY);
+    const theme = v === "dark" ? "dark" : "light";
+
+    document.body.classList.toggle("dark", theme === "dark");
+
+    if (toggle) {
+      toggle.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
+  }
+
+  // Beim Laden immer anwenden
+  applyThemeFromStorage();
+
   if (!toggle) return;
 
-  // initial state
-  toggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-
-  // prevent double binding
+  // Doppelbindung verhindern (wichtig bei deinem Re-Render!)
   if (toggle.dataset.bound === "1") return;
   toggle.dataset.bound = "1";
 
   toggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    toggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+    const current = localStorage.getItem(STORAGE_KEY);
+    const next = current === "dark" ? "light" : "dark";
+
+    // 1️⃣ Nur LocalStorage ändern
+    localStorage.setItem(STORAGE_KEY, next);
+
+    // 2️⃣ Direkt im aktuellen Tab anwenden
+    applyThemeFromStorage();
+  });
+
+  // 3️⃣ Wenn anderer Tab den Wert ändert → hier übernehmen
+  window.addEventListener("storage", (e) => {
+    if (e.key === STORAGE_KEY) {
+      applyThemeFromStorage();
+    }
   });
 }
