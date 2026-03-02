@@ -290,7 +290,7 @@
       "sprache": "de-CH",
       "titel": "Flüssiges Gold",
       "bild": {
-        "pfad": "bilder/rezepte/PLACEHOLDER.png",
+        "pfad": "bilder/rezepte/recipe-fluessiges-gold.png",
         "alt": "Flüssiges Gold (alkoholfreier Mango-Drink)"
       },
       "basis_portionen": 1,
@@ -569,7 +569,7 @@
             "position": 2,
             "posten": [
               {
-                "zutat_id": "orangenzeste",
+                "zutat_id": "orangenscheibe",
                 "menge": 1,
                 "einheit": "",
                 "zubereitung": "Garnitur"
@@ -669,7 +669,7 @@
           {
             "gruppe": "Optional",
             "posten": [
-              "orangenzeste",
+              "orangenscheibe",
               "eiswuerfel"
             ]
           }
